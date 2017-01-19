@@ -1,0 +1,1 @@
+<div id="[[++locationresources.map_div]]"></div>

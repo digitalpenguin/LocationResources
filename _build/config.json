@@ -1,0 +1,55 @@
+{
+    "name": "LocationResources",
+    "lowCaseName": "locationresources",
+    "description": "Google Map locations as extended MODX Resources.",
+    "author": "Murray Wood",
+    "version": "0.1.0",
+    "package":{
+
+        "menus": [],
+
+        "elements": {
+            "snippets": [{
+                "name": "locationResourcesMap",
+                "file": "locationresourcesmap.snippet.php"
+            }],
+            "chunks": [{
+                "name": "locationResourcesTpl",
+                "file": "locationresourcestpl.chunk.tpl"
+            },{
+                "name": "locationResourcesScript",
+                "file": "locationresourcesscript.chunk.tpl"
+            },{
+                "name": "locationResourcesCSS",
+                "file": "locationresourcescss.chunk.tpl"
+            }]
+        },
+
+        "systemSettings": [{
+            "key": "api_key",
+            "type": "textfield",
+            "area": "default",
+            "value": ""
+        },{
+            "key": "map_height",
+            "type": "textfield",
+            "area": "default",
+            "value": "300"
+        },{
+            "key": "use_default_css",
+            "type": "combo-boolean",
+            "area": "default",
+            "value": "1"
+        },{
+            "key": "map_div",
+            "type": "textfield",
+            "area": "default",
+            "value": "lr_map"
+        }]
+    }
+    
+    ,"database": {
+        "tables": ["LocationProfile"]
+    }
+    ,"extensionPackage": {}
+}

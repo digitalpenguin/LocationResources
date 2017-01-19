@@ -1,0 +1,10 @@
+#location-map-marker-panel .x-panel-body { border-radius:0 0 3px 3px;}
+#location-map-marker-fieldset .x-panel-body.main-wrapper.x-panel-body-noheader.x-column-layout-ct {padding:0;}
+#location-map-marker-fieldset .x-form-label-top .x-form-item label.x-form-item-label {padding:0 0 3px 0;}
+
+#location-map { margin-bottom:20px;}
+#location-map .x-panel-header {padding:15px;}
+.map-panel-header { border-radius: 3px 3px 0 0; line-height: 15px; background: transparent repeat-x 0 -1px; overflow: hidden; zoom: 1; padding: 5px 3px 4px 5px; box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.1); }
+.location-map-body {padding:0; border-radius:0;}
+#map-data-container { padding:0 12px 15px 12px;}
+#map-data-button-col {padding-top:32px;}
