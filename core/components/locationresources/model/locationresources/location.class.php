@@ -13,7 +13,7 @@ class Location extends modResource
         $this->set('class_key', 'Location');
     }
     public static function getControllerPath(xPDO &$modx) {
-        return $modx->getOption('locationresources.core_path', null, $modx->getOption('core_path') . 'components/collections/') . 'controllers/';
+        return $modx->getOption('locationresources.core_path', null, $modx->getOption('core_path') . 'components/locationresources/') . 'controllers/';
     }
     public function getContextMenuText() {
         $this->xpdo->lexicon->load('locationresources:default');
