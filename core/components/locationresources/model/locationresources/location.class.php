@@ -28,7 +28,6 @@ class Location extends modResource {
     }
 }
 
-
 class LocationUpdateProcessor extends modResourceUpdateProcessor {
     public $profile;
     /**
@@ -47,9 +46,9 @@ class LocationUpdateProcessor extends modResourceUpdateProcessor {
     }
     // If an existing standard resource is changed to a LocationResource, a profile still needs to be created.
     public function createProfile() {
-        $this->profile = $this->modx->newObject('LocationProfile');
-        $this->profile->set('location',$this->object->get('id'));
-        $this->object->addOne($this->profile);
+        $this->profile = $this->modx->newObject('LocationProfile',array(
+            'location' => $this->object->get('id')
+        ));
         $this->profile->fromArray($this->getProperties());
         $this->profile->save();
         return $this->profile;
@@ -74,11 +73,12 @@ class LocationCreateProcessor extends modResourceCreateProcessor {
         return parent::beforeSet();
     }
     public function createProfile() {
-        $this->profile = $this->modx->newObject('LocationProfile');
-        $this->object->addOne($this->profile);
+        $this->profile = $this->modx->newObject('LocationProfile',array(
+            'location' => $this->object->get('id')
+        ));
         $this->profile->fromArray($this->getProperties());
         $this->profile->save();
+        $this->object->addOne($this->profile);
         return $this->profile;
     }
-
 }
