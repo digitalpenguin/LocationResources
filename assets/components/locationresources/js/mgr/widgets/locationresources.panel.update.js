@@ -9,7 +9,7 @@ LocationResources.panel.UpdateLocation = function(config) {
 Ext.extend(LocationResources.panel.UpdateLocation,MODx.panel.Resource,{
 
     addMapDataFields: function(config) {
-        console.log(config.record);
+        //console.log(config.record);
         var me = this;
         return {
             id: 'map-data-fieldset',

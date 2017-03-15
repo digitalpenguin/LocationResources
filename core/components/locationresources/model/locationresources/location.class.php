@@ -5,8 +5,8 @@ require_once MODX_CORE_PATH.'model/modx/processors/resource/update.class.php';
 /**
  * @package locationresources
  */
-class Location extends modResource
-{
+class Location extends modResource {
+
     public $showInContextMenu = true;
     function __construct(xPDO & $xpdo) {
         parent:: __construct($xpdo);
@@ -26,8 +26,8 @@ class Location extends modResource
         $this->xpdo->lexicon->load('locationresources:default');
         return $this->xpdo->lexicon('locationresources.system.type_name');
     }
-
 }
+
 
 class LocationUpdateProcessor extends modResourceUpdateProcessor {
     public $profile;
@@ -36,16 +36,30 @@ class LocationUpdateProcessor extends modResourceUpdateProcessor {
      * @return boolean
      */
     public function beforeSet() {
-        $this->updateProfile();
+        // Check to see if the resource is already a LocationResource.
+        if($this->object instanceof Location) {
+            $this->updateProfile();
+        } else {
+            $this->createProfile();
+        }
         $this->setProperty('cacheable',true);
         return parent::beforeSet();
     }
+    // If an existing standard resource is changed to a LocationResource, a profile still needs to be created.
+    public function createProfile() {
+        $this->profile = $this->modx->newObject('LocationProfile');
+        $this->profile->set('location',$this->object->get('id'));
+        $this->object->addOne($this->profile);
+        $this->profile->fromArray($this->getProperties());
+        $this->profile->save();
+        return $this->profile;
+    }
+    // If the resource being updated is already a LocationResource, just use the existing profile.
     public function updateProfile() {
         $this->profile = $this->object->getOne('Profile');
         $this->profile->fromArray($this->getProperties());
         return $this->profile;
     }
-
 }
 
 class LocationCreateProcessor extends modResourceCreateProcessor {
@@ -55,11 +69,11 @@ class LocationCreateProcessor extends modResourceCreateProcessor {
      * @return boolean
      */
     public function beforeSet() {
-        $this->updateProfile();
+        $this->createProfile();
         $this->setProperty('cacheable',true);
         return parent::beforeSet();
     }
-    public function updateProfile() {
+    public function createProfile() {
         $this->profile = $this->modx->newObject('LocationProfile');
         $this->object->addOne($this->profile);
         $this->profile->fromArray($this->getProperties());

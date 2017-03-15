@@ -1,7 +1,7 @@
 ---------------------------------------
 LocationResources
 ---------------------------------------
-Version: 0.1.0
+Version: 1.0.1
 Author: Murray Wood <murray@digitalpenguin.hk>
 ---------------------------------------
 

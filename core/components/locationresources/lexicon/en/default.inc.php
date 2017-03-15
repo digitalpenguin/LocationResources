@@ -7,9 +7,9 @@
  */
 
 $_lang['locationresources'] = 'LocationResources';
-$_lang['locationresources.system.text_create'] = 'Create New Location';
-$_lang['locationresources.system.text_create_here'] = 'Create a new location here';
-$_lang['locationresources.system.type_name'] = 'Location';
+$_lang['locationresources.system.text_create'] = 'Create New Location Resource';
+$_lang['locationresources.system.text_create_here'] = 'Create a New Location Resource Here';
+$_lang['locationresources.system.type_name'] = 'Location Resource';
 
 // Grid
 $_lang['locationresources.marker.title'] = 'Title';

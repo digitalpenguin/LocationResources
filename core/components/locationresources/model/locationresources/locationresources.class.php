@@ -12,7 +12,6 @@ class LocationResources {
     public $options = array();
     public $profile = null;
 
-
     public function __construct(modX &$modx, array $options = array()) {
         $this->modx =& $modx;
         $this->namespace = $this->getOption('namespace', $options, 'locationresources');

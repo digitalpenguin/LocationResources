@@ -14,8 +14,8 @@ $xpdo_meta_map['LocationProfile']= array (
     'lng' => 114.18151,
     'zoom_level' => 4,
     'has_marker' => 0,
-    'marker_lat' => 0,
-    'marker_lng' => 0,
+    'marker_lat' => 0.0,
+    'marker_lng' => 0.0,
     'marker_title' => '',
     'marker_desc' => '',
     'marker_link' => '',
@@ -28,7 +28,7 @@ $xpdo_meta_map['LocationProfile']= array (
       'precision' => '10',
       'phptype' => 'integer',
       'attributes' => 'unsigned',
-      'null' => false,
+      'null' => true,
       'default' => 0,
     ),
     'lat' => 
@@ -71,7 +71,7 @@ $xpdo_meta_map['LocationProfile']= array (
       'precision' => '10,6',
       'phptype' => 'float',
       'null' => true,
-      'default' => 0,
+      'default' => 0.0,
     ),
     'marker_lng' => 
     array (
@@ -79,28 +79,28 @@ $xpdo_meta_map['LocationProfile']= array (
       'precision' => '10,6',
       'phptype' => 'float',
       'null' => true,
-      'default' => 0,
+      'default' => 0.0,
     ),
     'marker_title' => 
     array (
       'dbtype' => 'varchar',
       'phptype' => 'string',
       'precision' => '191',
-      'null' => false,
+      'null' => true,
       'default' => '',
     ),
     'marker_desc' => 
     array (
       'dbtype' => 'text',
       'phptype' => 'string',
-      'null' => false,
+      'null' => true,
       'default' => '',
     ),
     'marker_link' => 
     array (
       'dbtype' => 'text',
       'phptype' => 'string',
-      'null' => false,
+      'null' => true,
       'default' => '',
     ),
   ),
