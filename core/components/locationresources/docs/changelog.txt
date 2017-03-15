@@ -3,6 +3,7 @@ Changelog for LocationResources.
 LocationResources 1.0.1
 ==============
 - Fixed changing an existing standard resource into a Location Resource.
+- Fixed duplication of Location Resources.
 - Updated Lexicon text
 
 LocationResources 1.0.0

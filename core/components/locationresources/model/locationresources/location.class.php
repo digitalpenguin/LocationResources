@@ -12,6 +12,14 @@ class Location extends modResource {
         parent:: __construct($xpdo);
         $this->set('class_key', 'Location');
     }
+    public function duplicate(array $options = array()) {
+        $duplicated = parent::duplicate($options);
+        if ($duplicated instanceof Location) {
+            $locationProfile = $this->getOne('Profile');
+            $locationProfile->duplicate($duplicated);
+        }
+        return $duplicated;
+    }
     public static function getControllerPath(xPDO &$modx) {
         return $modx->getOption('locationresources.core_path', null, $modx->getOption('core_path') . 'components/locationresources/') . 'controllers/';
     }
