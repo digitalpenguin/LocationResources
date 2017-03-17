@@ -1,1 +1,1 @@
-<div id="[[++locationresources.map_div]]"></div>
+<div id="[[++locationresources.map_div]][[+docid]]"></div>
