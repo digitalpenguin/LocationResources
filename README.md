@@ -25,12 +25,16 @@ Call this snippet on any template/chunk attached to the LocationResource:
 
 This will display a map with all the default settings.
 
-For customization, you can call the snippet with currently three parameters:
-**[[!locationResources? &tpl=`myCustomTpl` &js=`myCustomJS` &css=`myCustomDefaultCSS`]]**
+For customization, you can call the snippet with four parameters:
+**[[!locationResources? &docid=`[resource id]` &tpl=`myCustomTpl` &js=`myCustomJS` &css=`myCustomDefaultCSS`]]**
 
 
 Parameters
 ==========
+
+&docid
+------
+The document id of the resource you wish to target for map display. Defaults to the current resource if not supplied.
 
 &tpl 
 ----
