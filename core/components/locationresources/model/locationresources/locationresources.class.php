@@ -86,8 +86,7 @@ class LocationResources {
     }
 
     public function getMap($tpl,$js,$css,$docid) {
-        $targetdoc = $this->modx->getObject('modResource',$docid);
-        if(!$targetdoc) return 'Error: could not load requested resource ' . $docid;
+        if(!$targetdoc = $this->modx->getObject('modResource',$docid)) return 'Error: could not load requested resource ' . $docid;
         if(!$this->profile = $targetdoc->getOne('Profile')) return 'Error: resource did not contain a profile';
         $this->setMapPlaceholders();
 
