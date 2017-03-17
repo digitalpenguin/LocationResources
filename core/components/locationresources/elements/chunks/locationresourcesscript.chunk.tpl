@@ -1,5 +1,5 @@
 <script>
-    var lrMap = new google.maps.Map(document.getElementById('[[++locationresources.map_div]]'), {
+    var lrMap = new google.maps.Map(document.getElementById('[[++locationresources.map_div]][[+docid]]'), {
         zoom: [[+lr.zoom_lvl]],
         center: {lat: [[+lr.map_lat]], lng: [[+lr.map_lng]]}
     });
