@@ -33,4 +33,9 @@
             });
         }
     }
+	google.maps.event.addDomListener(window, "resize", function() {
+		var center = lrMap[[+docid]].getCenter();
+		google.maps.event.trigger(lrMap[[+docid]], "resize");
+		lrMap[[+docid]].setCenter(center);
+	});
 </script>
