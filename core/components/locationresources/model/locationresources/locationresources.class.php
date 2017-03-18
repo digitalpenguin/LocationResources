@@ -86,9 +86,9 @@ class LocationResources {
     }
 
     public function getMap($tpl,$js,$css,$docid) {
-        if(!$targetdoc = $this->modx->getObject('modResource',$docid)) return 'Error: could not load requested resource ' . $docid;
+        if(!$targetdoc = $this->modx->getObject('modResource',$docid)) return 'Error: could not load requested resource (ID:' . $docid . ')';
         if($targetdoc->get('class_key') != "Location") return 'Error: resource is not a Location type (ID:' . $docid . ')';
-        if(!$this->profile = $targetdoc->getOne('Profile')) return 'Error: resource did not contain a profile';
+        if(!$this->profile = $targetdoc->getOne('Profile')) return 'Error: resource did not contain an extended profile (ID:' . $docid . ')';
         $this->setMapPlaceholders();
 
         // Check for GMaps API Key and add lib to head.
