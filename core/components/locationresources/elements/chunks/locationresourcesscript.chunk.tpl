@@ -1,5 +1,5 @@
 <script>
-    var lrMap[[+docid]] = new google.maps.Map(document.getElementById('[[++locationresources.map_div]][[+docid]]'), {
+    var lrMap[[+lr.docid]] = new google.maps.Map(document.getElementById('[[++locationresources.map_div]][[+lr.docid]]'), {
         zoom: [[+lr.zoom_lvl]],
         center: {lat: [[+lr.map_lat]], lng: [[+lr.map_lng]]}
     });
@@ -8,7 +8,7 @@
             position: {lat: [[+lr.marker_lat]], lng: [[+lr.marker_lng]]},
             draggable: false,
             clickable: true,
-            map: lrMap[[+docid]]
+            map: lrMap[[+lr.docid]]
         });
         var lrTitle = '[[+lr.marker_title]]';
         var lrDesc = '[[+lr.marker_desc]]';
@@ -27,9 +27,9 @@
             marker.info = new google.maps.InfoWindow({
                 content: lrContent
             });
-            marker.info.open(lrMap[[+docid]], marker);
+            marker.info.open(lrMap[[+lr.docid]], marker);
             google.maps.event.addListener(marker, 'click', function() {
-                marker.info.open(lrMap[[+docid]], marker);
+                marker.info.open(lrMap[[+lr.docid]], marker);
             });
         }
     }
