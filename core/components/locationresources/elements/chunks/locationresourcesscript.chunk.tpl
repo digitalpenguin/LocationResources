@@ -34,8 +34,8 @@
         }
     }
     google.maps.event.addDomListener(window, "resize", function() {
-		    var center = lrMap[[+lr.docid]].getCenter();
-		    google.maps.event.trigger(lrMap[[+lr.docid]], "resize");
-		    lrMap[[+lr.docid]].setCenter(center);
-	  });
+        var center = lrMap[[+lr.docid]].getCenter();
+        google.maps.event.trigger(lrMap[[+lr.docid]], "resize");
+        lrMap[[+lr.docid]].setCenter(center);
+    });
 </script>

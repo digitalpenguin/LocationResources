@@ -71,8 +71,9 @@ class LocationResources {
         return false;
     }
 
-    public function setMapPlaceholders() {
+    public function setMapPlaceholders($docid) {
         $this->modx->setPlaceholders(array(
+            'docid'         =>  $docid,
             'map_lat'       =>  $this->profile->get('lat'),
             'map_lng'       =>  $this->profile->get('lng'),
             'zoom_lvl'      =>  $this->profile->get('zoom_level'),
@@ -86,22 +87,22 @@ class LocationResources {
     }
 
     public function getMap($tpl,$js,$css,$docid) {
-        if(!$targetdoc = $this->modx->getObject('modResource',$docid)) return 'Error: could not load requested resource (ID:' . $docid . ')';
-        if($targetdoc->get('class_key') != "Location") return 'Error: resource is not a Location type (ID:' . $docid . ')';
-        if(!$this->profile = $targetdoc->getOne('Profile')) return 'Error: resource did not contain an extended profile (ID:' . $docid . ')';
-        $this->setMapPlaceholders();
+        if(!$targetDoc = $this->modx->getObject('modResource',$docid)) return 'Error: could not load requested resource (ID:' . $docid . ')';
+        if($targetDoc->get('class_key') != "Location") return 'Error: resource is not a Location type (ID:' . $docid . ')';
+        if(!$this->profile = $targetDoc->getOne('Profile')) return 'Error: resource did not contain an extended profile (ID:' . $docid . ')';
+        $this->setMapPlaceholders($docid);
 
         // Check for GMaps API Key and add lib to head.
         $error = $this->initializeMap();
         if($error != false) return $error;
 
         // Get chunks and return errors if missing.
-        if(!$map = $this->modx->getChunk($tpl,array('lr.docid'=>$docid))) return 'Error: Unable to find the locationResourcesTpl chunk!';
-        if(!$jsChunk = $this->modx->getChunk($js,array('lr.docid'=>$docid))) return 'Error: Unable to find the locationResourcesScript chunk!';
+        if(!$map = $this->modx->getChunk($tpl)) return 'Error: Unable to find the locationResourcesTpl chunk!';
+        if(!$jsChunk = $this->modx->getChunk($js)) return 'Error: Unable to find the locationResourcesScript chunk!';
 
         // Add default CSS to <head>
         if ($this->getOption('use_default_css')) {
-            if(!$cssChunk = $this->modx->getChunk($css,array('lr.docid'=>$docid))) return 'Error: Unable to find the locationResourcesCSS chunk!';
+            if(!$cssChunk = $this->modx->getChunk($css)) return 'Error: Unable to find the locationResourcesCSS chunk!';
             $this->modx->regClientStartupHTMLBlock($cssChunk);
         }
 

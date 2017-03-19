@@ -1,5 +1,17 @@
 Changelog for LocationResources.
 
+LocationResources 1.1.0 (19/03/2017)
+==============
+- Added serialisation to DIV so that map data can be loaded from other resources. This also allows multiple maps with snippets such as pdoTools or getResources.
+- Updated documentation
+- Added ID to error reports.
+- Added namespaced placeholder for docid.
+- Added class_key sanity check.
+- Make maps responsively scale to center.
+Big thanks to @jcdm (Josh Curtis) for the above additions!
+
+- Some aesthetic changes to service class code.
+
 LocationResources 1.0.1
 ==============
 - Fixed changing an existing standard resource into a Location Resource.
