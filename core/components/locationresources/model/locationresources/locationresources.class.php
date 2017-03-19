@@ -96,12 +96,12 @@ class LocationResources {
         if($error != false) return $error;
 
         // Get chunks and return errors if missing.
-        if(!$map = $this->modx->getChunk($tpl,array('docid'=>$docid))) return 'Error: Unable to find the locationResourcesTpl chunk!';
-        if(!$jsChunk = $this->modx->getChunk($js,array('docid'=>$docid))) return 'Error: Unable to find the locationResourcesScript chunk!';
+        if(!$map = $this->modx->getChunk($tpl,array('lr.docid'=>$docid))) return 'Error: Unable to find the locationResourcesTpl chunk!';
+        if(!$jsChunk = $this->modx->getChunk($js,array('lr.docid'=>$docid))) return 'Error: Unable to find the locationResourcesScript chunk!';
 
         // Add default CSS to <head>
         if ($this->getOption('use_default_css')) {
-            if(!$cssChunk = $this->modx->getChunk($css,array('docid'=>$docid))) return 'Error: Unable to find the locationResourcesCSS chunk!';
+            if(!$cssChunk = $this->modx->getChunk($css,array('lr.docid'=>$docid))) return 'Error: Unable to find the locationResourcesCSS chunk!';
             $this->modx->regClientStartupHTMLBlock($cssChunk);
         }
 
