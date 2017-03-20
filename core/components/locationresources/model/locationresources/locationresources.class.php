@@ -95,6 +95,19 @@ class LocationResources {
         // Check for GMaps API Key and add lib to head.
         $error = $this->initializeMap();
         if($error != false) return $error;
+        
+        // Check if docid has already been used as a DIV id and if it has, start incrementing
+        $proposedDIVID = "lr_map" . $docid;
+        $baseID = $docid;
+		if(strpos($this->modx->getRegisteredClientStartupScripts(),$proposedDIVID)!==FALSE) {
+	        for($i=1;$i<99;$i++) {
+		        $proposedDIVID = "lr_map" . $baseID . "_" . $i;
+		        if(strpos($this->modx->getRegisteredClientStartupScripts(),$proposedDIVID)===FALSE) {
+			        $docid = $baseID . "_" . $i;
+			        break;
+		        }
+	        }
+        }
 
         // Get chunks and return errors if missing.
         if(!$map = $this->modx->getChunk($tpl)) return 'Error: Unable to find the locationResourcesTpl chunk!';
