@@ -110,10 +110,10 @@ class LocationResources {
         // Check if docid has already been used as a div id and if it has, start incrementing
         $proposedDivId = '#'.$this->modx->getOption('locationresources.map_div').$docid;
         $baseId = $docid;
-		if(strpos($this->modx->getRegisteredClientStartupScripts(),$proposedDivId)) {
+		if(strpos($this->modx->getRegisteredClientStartupScripts(),$proposedDivId)!==false) {
 		    for($i=1;$i<99;$i++) { // The number 99 is arbitrary
                 $proposedDivId = $this->modx->getOption('locationresources.map_div') . $baseId . '_' . $i;
-		        if(!strpos($this->modx->getRegisteredClientStartupScripts(),$proposedDivId)) {
+		        if(strpos($this->modx->getRegisteredClientStartupScripts(),$proposedDivId)===false) {
 			        $docid = $baseId.'_'.$i;
 			        break;
 		        }
