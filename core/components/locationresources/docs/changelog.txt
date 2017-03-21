@@ -1,5 +1,13 @@
 Changelog for LocationResources.
 
+NOTICE: If upgrading from 1.0.* version and using a custom chunk for tpl,css or js; you will need to update your chunks to include the new [[+lr.docid]] placeholder as shown in the new default chunks!
+
+
+LocationResources 1.1.1 (21/03/2017)
+==============
+- Fixes div id generation for if the same map is called twice on a resource for some reason.
+
+
 LocationResources 1.1.0 (19/03/2017)
 ==============
 - Added serialisation to DIV so that map data can be loaded from other resources. This also allows multiple maps with snippets such as pdoTools or getResources.
@@ -12,11 +20,13 @@ Big thanks to @jcdm (Josh Curtis) for the above additions!
 
 - Some aesthetic changes to service class code.
 
+
 LocationResources 1.0.1
 ==============
 - Fixed changing an existing standard resource into a Location Resource.
 - Fixed duplication of Location Resources.
 - Updated Lexicon text
+
 
 LocationResources 1.0.0
 ==============

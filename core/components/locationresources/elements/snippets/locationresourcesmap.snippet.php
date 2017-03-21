@@ -12,5 +12,4 @@ $locationResources = $modx->getService(
 if (!($locationResources instanceof LocationResources)) {
     return;
 }
-
 return $locationResources->getMap($tpl,$js,$css,$docid);

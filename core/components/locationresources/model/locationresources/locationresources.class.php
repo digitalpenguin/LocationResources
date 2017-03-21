@@ -71,6 +71,10 @@ class LocationResources {
         return false;
     }
 
+    /**
+     * Sets all the placeholders.
+     * @param $docid
+     */
     public function setMapPlaceholders($docid) {
         $this->modx->setPlaceholders(array(
             'docid'         =>  $docid,
@@ -86,28 +90,36 @@ class LocationResources {
         ),'lr.');
     }
 
+    /**
+     * This is the main function called by the snippet. It injects the CSS and JS and returns the div for the map.
+     * @param $tpl
+     * @param $js
+     * @param $css
+     * @param $docid
+     * @return bool|string
+     */
     public function getMap($tpl,$js,$css,$docid) {
         if(!$targetDoc = $this->modx->getObject('modResource',$docid)) return 'Error: could not load requested resource (ID:' . $docid . ')';
         if($targetDoc->get('class_key') != "Location") return 'Error: resource is not a Location type (ID:' . $docid . ')';
         if(!$this->profile = $targetDoc->getOne('Profile')) return 'Error: resource did not contain an extended profile (ID:' . $docid . ')';
-        $this->setMapPlaceholders($docid);
 
         // Check for GMaps API Key and add lib to head.
         $error = $this->initializeMap();
         if($error != false) return $error;
-        
-        // Check if docid has already been used as a DIV id and if it has, start incrementing
-        $proposedDIVID = "lr_map" . $docid;
-        $baseID = $docid;
-		if(strpos($this->modx->getRegisteredClientStartupScripts(),$proposedDIVID)!==FALSE) {
-	        for($i=1;$i<99;$i++) {
-		        $proposedDIVID = "lr_map" . $baseID . "_" . $i;
-		        if(strpos($this->modx->getRegisteredClientStartupScripts(),$proposedDIVID)===FALSE) {
-			        $docid = $baseID . "_" . $i;
+
+        // Check if docid has already been used as a div id and if it has, start incrementing
+        $proposedDivId = '#'.$this->modx->getOption('locationresources.map_div').$docid;
+        $baseId = $docid;
+		if(strpos($this->modx->getRegisteredClientStartupScripts(),$proposedDivId)) {
+		    for($i=1;$i<99;$i++) { // The number 99 is arbitrary
+                $proposedDivId = $this->modx->getOption('locationresources.map_div') . $baseId . '_' . $i;
+		        if(!strpos($this->modx->getRegisteredClientStartupScripts(),$proposedDivId)) {
+			        $docid = $baseId.'_'.$i;
 			        break;
 		        }
 	        }
         }
+        $this->setMapPlaceholders($docid);
 
         // Get chunks and return errors if missing.
         if(!$map = $this->modx->getChunk($tpl)) return 'Error: Unable to find the locationResourcesTpl chunk!';
@@ -121,7 +133,6 @@ class LocationResources {
 
         // Add JS script to bottom of <body>
         $this->modx->regClientHTMLBlock($jsChunk);
-
         return $map;
     }
 }
