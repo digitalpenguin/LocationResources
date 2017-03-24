@@ -3,7 +3,7 @@
     "lowCaseName": "locationresources",
     "description": "Google Map locations as extended MODX Resources.",
     "author": "Murray Wood",
-    "version": "1.1.1",
+    "version": "1.1.2",
     "package":{
 
         "menus": [],
@@ -45,6 +45,21 @@
             "type": "textfield",
             "area": "default",
             "value": "lr_map"
+        },{
+            "key": "default_latitude",
+            "type": "textfield",
+            "area": "default",
+            "value": "22.286424"
+        },{
+            "key": "default_longitude",
+            "type": "textfield",
+            "area": "default",
+            "value": "114.18151"
+        },{
+            "key": "default_zoom_level",
+            "type": "textfield",
+            "area": "default",
+            "value": "11"
         }]
     }
     

@@ -5,16 +5,17 @@
     </object>
 
     <object class="LocationProfile" table="location_profile" extends="xPDOSimpleObject">
-        <field key="location" dbtype="int" precision="10" phptype="integer" attributes="unsigned" null="true" default="" />
-        <field key="lat" dbtype="decimal" precision="10,6" phptype="float" null="true" default="22.286424" />
-        <field key="lng" dbtype="decimal" precision="10,6" phptype="float" null="true" default="114.18151" />
-        <field key="zoom_level" dbtype="int" precision="10" phptype="integer" attributes="unsigned" null="false" default="4" />
-        <field key="has_marker" dbtype="tinyint" precision="1" phptype="integer" attributes="unsigned" null="false" default="0" />
-        <field key="marker_lat" dbtype="decimal" precision="10,6" phptype="float" null="true" default="0.000000" />
-        <field key="marker_lng" dbtype="decimal" precision="10,6" phptype="float" null="true" default="0.000000" />
-        <field key="marker_title" dbtype="varchar" phptype="string" precision="191" null="true" default="" />
-        <field key="marker_desc" dbtype="text" phptype="string" null="true" default=""/>
-        <field key="marker_link" dbtype="text" phptype="string" null="true" default=""/>
+        <field key="location" dbtype="int" precision="10" phptype="integer" attributes="unsigned" null="true" />
+        <field key="lat" dbtype="decimal" precision="10,6" phptype="float" null="true" />
+        <field key="lng" dbtype="decimal" precision="10,6" phptype="float" null="true" />
+        <field key="zoom_level" dbtype="int" precision="10" phptype="integer" attributes="unsigned" null="true" />
+        <field key="has_marker" dbtype="tinyint" precision="1" phptype="integer" attributes="unsigned" null="true" />
+        <field key="marker_lat" dbtype="decimal" precision="10,6" phptype="float" null="true" />
+        <field key="marker_lng" dbtype="decimal" precision="10,6" phptype="float" null="true" />
+        <field key="marker_title" dbtype="varchar" phptype="string" precision="191" null="true" />
+        <field key="marker_desc" dbtype="text" phptype="string" null="true" />
+        <field key="marker_link" dbtype="text" phptype="string" null="true" />
+        <field key="marker_link_text" dbtype="varchar" phptype="string" precision="191" null="true" />
         <aggregate alias="Location" class="Location" local="location" foreign="id" cardinality="one" owner="foreign" />
     </object>
 </model>

@@ -6,7 +6,7 @@ LocationResources
 LocationResources is a basic integration between the Google Maps API and MODX Resources.
 It allows drag and drop in the MODX manager to position maps and set markers which is then reflected on the web context (or others).
 
-21.3.2017 - **Version 1.1.1**
+24.3.2017 - **Version 1.1.2**
 
 ***If upgrading from 1.0.\* version and using a custom chunk for tpl,css or js; you will need to update your chunks to include the new [[+lr.docid]] placeholder as shown in the new default chunks!***
 

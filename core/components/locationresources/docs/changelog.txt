@@ -2,6 +2,12 @@ Changelog for LocationResources.
 
 NOTICE: If upgrading from 1.0.* version and using a custom chunk for tpl,css or js; you will need to update your chunks to include the new [[+lr.docid]] placeholder as shown in the new default chunks!
 
+LocationResources 1.1.2 (24/03/2017)
+==============
+- Removed default values from xpdo schema. Default decimal values causing install errors when using a locale that uses commas instead.
+- 3 new system settings where map defaults are now stored. After install, the defaults can be set by the developer.
+- marker_link_test column added to database for future feature upgrade.
+
 
 LocationResources 1.1.1 (21/03/2017)
 ==============

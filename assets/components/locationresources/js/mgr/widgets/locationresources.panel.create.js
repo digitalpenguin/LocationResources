@@ -5,9 +5,9 @@ LocationResources.panel.CreateLocation = function(config) {
 
     // Load default record values to mimic update panel
     config.record.has_marker = 0;
-    config.record.lat = 22.286424;
-    config.record.lng = 114.18151;
-    config.record.zoom_level = 2;
+    config.record.lat = Number(MODx.config['locationresources.default_latitude']);
+    config.record.lng = Number(MODx.config['locationresources.default_longitude']);
+    config.record.zoom_level = Number(MODx.config['locationresources.default_zoom_level']);
 
     LocationResources.panel.CreateLocation.superclass.constructor.call(this,config);
     this.addMapPanel(config);
@@ -15,7 +15,7 @@ LocationResources.panel.CreateLocation = function(config) {
 Ext.extend(LocationResources.panel.CreateLocation,MODx.panel.Resource,{
 
     addMapDataFields: function(config) {
-        console.log(config.record);
+        //console.log(config.record);
         var me = this;
         return {
             id: 'map-data-fieldset',
