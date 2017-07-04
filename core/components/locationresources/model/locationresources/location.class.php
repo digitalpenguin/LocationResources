@@ -64,6 +64,11 @@ class LocationUpdateProcessor extends modResourceUpdateProcessor {
     // If the resource being updated is already a LocationResource, just use the existing profile.
     public function updateProfile() {
         $this->profile = $this->object->getOne('Profile');
+        // Check to make sure profile record exists. If it doesn't create a new one instead of updating.
+        // This is merely a safety check to avoid errors if the database record is accidentally deleted.
+        if(!$this->profile) {
+            return $this->createProfile();
+        }
         $this->profile->fromArray($this->getProperties());
         return $this->profile;
     }

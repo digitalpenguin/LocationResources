@@ -24,8 +24,52 @@ Ext.extend(LocationResources.panel.UpdateLocation,MODx.panel.Resource,{
                 msgTarget: 'under'
             },
             items:[{
+                xtype:'fieldset',
+                id:'map-data-action-fieldset',
+                layout:'column',
+                title:'Actions',
+                items:[{
+                    id:'map-data-address-col',
+                    layout:'form',
+                    width:124,
+                    items: [{
+                        xtype: 'button',
+                        id: 'button-find-address',
+                        text: '<i class="icon icon-search"></i> Find Address',
+                        handler: me.findAddressWindow
+                    }]
+
+                },{
+                    id:'map-data-button-col',
+                    layout: 'form',
+                    width: 133,
+                    items: [{
+                        xtype: 'button',
+                        id: 'button-add-marker',
+                        text: '<i class="icon icon-map-marker"></i> Add Marker',
+                        handler: function() {
+                            if(Ext.getCmp('has-marker-field').getValue() == 1) {
+                                me.showCurrentMarkerPanel(config);
+                            } else {
+                                me.showNewMarkerPanel(config);
+                            }
+
+                        },scope:this
+                    },{
+                        xtype: 'button',
+                        id: 'button-remove-marker',
+                        text: '<i class="icon icon-map-marker"></i> Remove Marker',
+                        hidden:true,
+                        handler: function() {
+                            this.marker.setMap(null);
+                            me.removeMarkerPanel(config);
+                        },scope:this
+                    }]
+                }]
+
+            },{
                 id:'map-data-left-col',
-                columnWidth: .33,
+                columnWidth: .4,
                 layout:'form',
                 items:[{
                     xtype: 'numberfield',
@@ -53,7 +97,7 @@ Ext.extend(LocationResources.panel.UpdateLocation,MODx.panel.Resource,{
             },{
                 id:'map-data-mid-col',
                 layout: 'form',
-                columnWidth: .33,
+                columnWidth: .4,
                 items:[{
                     xtype: 'numberfield',
                     id: 'map-data-longitude',
@@ -73,7 +117,7 @@ Ext.extend(LocationResources.panel.UpdateLocation,MODx.panel.Resource,{
             },{
                 id:'map-data-right-col',
                 layout:'form',
-                columnWidth: .33,
+                columnWidth: .18,
                 items:[{
                     xtype: 'locationresources-combo-zoomlevel',
                     id: 'map-data-zoom',
@@ -88,32 +132,6 @@ Ext.extend(LocationResources.panel.UpdateLocation,MODx.panel.Resource,{
                         },
                         scope: this
                     }
-                }]
-            },{
-                id:'map-data-button-col',
-                layout: 'form',
-                width: 124,
-                items: [{
-                    xtype: 'button',
-                    id: 'button-add-marker',
-                    text: '<i class="icon icon-map-marker"></i> Add Marker',
-                    handler: function() {
-                        if(Ext.getCmp('has-marker-field').getValue() == 1) {
-                            me.showCurrentMarkerPanel(config);
-                        } else {
-                            me.showNewMarkerPanel(config);
-                        }
-
-                    },scope:this
-                },{
-                    xtype: 'button',
-                    id: 'button-remove-marker',
-                    text: '<i class="icon icon-map-marker"></i> Remove Marker',
-                    hidden:true,
-                    handler: function() {
-                        this.marker.setMap(null);
-                        me.removeMarkerPanel(config);
-                    },scope:this
                 }]
             }]
         }
@@ -380,6 +398,18 @@ Ext.extend(LocationResources.panel.UpdateLocation,MODx.panel.Resource,{
         me.marker.info.setContent(content,me.marker.info);
         me.marker.info.open(me.googleMap, me.marker);
     }
+
+    ,findAddressWindow: function() {
+        var findAddress = MODx.load({
+            xtype: 'locationresources-window-findaddress'
+            ,listeners: {
+                'success': {fn:function() {
+                    this.refresh();
+                },scope:this}
+            }
+        });
+        findAddress.show();
+    }
 });
 Ext.reg('locationresources-panel-location-update',LocationResources.panel.UpdateLocation);
 
@@ -428,3 +458,20 @@ LocationResources.combo.ZoomLevel = function(config) {
 };
 Ext.extend(LocationResources.combo.ZoomLevel,MODx.combo.ComboBox);
 Ext.reg('locationresources-combo-zoomlevel',LocationResources.combo.ZoomLevel);
+
+LocationResources.window.FindAddress = function(config) {
+    config = config || {};
+    Ext.applyIf(config,{
+        action:'mgr/geocode/getCoords',
+        title:'Find Address',
+        width:600,
+        fields:[{
+            xtype:'textfield',
+            fieldLabel:'Enter Address',
+            anchor:'100%'
+        }]
+    });
+    LocationResources.window.FindAddress.superclass.constructor.call(this,config);
+};
+Ext.extend(LocationResources.window.FindAddress,MODx.Window);
+Ext.reg('locationresources-window-findaddress',LocationResources.window.FindAddress);

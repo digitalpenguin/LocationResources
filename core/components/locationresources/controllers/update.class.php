@@ -81,24 +81,28 @@ class LocationUpdateManagerController extends ResourceUpdateManagerController {
         /* Add data from related table */
         $this->profile = $this->resource->getOne('Profile');
         // If no values yet available on resource, get values from default system settings.
-        $this->resourceArray['lng'] = $this->profile->get('lng');
-        if (!$this->resourceArray['lng']) {
-            $this->resourceArray['lng'] = floatval($this->modx->getOption('locationresources.default_longitude'));
+        if(!$this->profile) {
+            if (!$this->resourceArray['lng']) {
+                $this->resourceArray['lng'] = floatval($this->modx->getOption('locationresources.default_longitude'));
+            }
+            if (!$this->resourceArray['lat']) {
+                $this->resourceArray['lat'] = floatval($this->modx->getOption('locationresources.default_latitude'));
+            }
+            if (!$this->resourceArray['zoom_level']) {
+                $this->resourceArray['zoom_level'] = (int)$this->modx->getOption('locationresources.default_zoom_level');
+            }
+        } else {
+            $this->resourceArray['lng'] = $this->profile->get('lng');
+            $this->resourceArray['lat'] = $this->profile->get('lat');
+            $this->resourceArray['zoom_level'] = $this->profile->get('zoom_level');
+            $this->resourceArray['has_marker'] = $this->profile->get('has_marker');
+            $this->resourceArray['marker_lat'] = $this->profile->get('marker_lat');
+            $this->resourceArray['marker_lng'] = $this->profile->get('marker_lng');
+            $this->resourceArray['marker_title'] = $this->profile->get('marker_title');
+            $this->resourceArray['marker_desc'] = $this->profile->get('marker_desc');
+            $this->resourceArray['marker_link'] = $this->profile->get('marker_link');
         }
-        $this->resourceArray['lat'] = $this->profile->get('lat');
-        if (!$this->resourceArray['lat']) {
-            $this->resourceArray['lat'] = floatval($this->modx->getOption('locationresources.default_latitude'));
-        }
-        $this->resourceArray['zoom_level'] = $this->profile->get('zoom_level');
-        if (!$this->resourceArray['zoom_level']) {
-            $this->resourceArray['zoom_level'] = (int)$this->modx->getOption('locationresources.default_zoom_level');
-        }
-        $this->resourceArray['has_marker'] = $this->profile->get('has_marker');
-        $this->resourceArray['marker_lat'] = $this->profile->get('marker_lat');
-        $this->resourceArray['marker_lng'] = $this->profile->get('marker_lng');
-        $this->resourceArray['marker_title'] = $this->profile->get('marker_title');
-        $this->resourceArray['marker_desc'] = $this->profile->get('marker_desc');
-        $this->resourceArray['marker_link'] = $this->profile->get('marker_link');
+
     }
 
 }

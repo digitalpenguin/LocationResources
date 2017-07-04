@@ -6,5 +6,8 @@
 #location-map .x-panel-header {padding:15px;}
 .map-panel-header { border-radius: 3px 3px 0 0; line-height: 15px; background: transparent repeat-x 0 -1px; overflow: hidden; zoom: 1; padding: 5px 3px 4px 5px; box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.1); }
 .location-map-body {padding:0; border-radius:0;}
-#map-data-container { padding:0 12px 15px 12px;}
-#map-data-button-col {padding-top:32px;}
+#map-data-container { padding:0 0 15px 12px;}
+#map-data-action-fieldset {padding:3px; margin:4px 0 0 0;}
+#map-data-button-col {padding-top:3px; margin-left:5px;}
+#button-add-marker {width:103px !important;}
+#map-data-address-col {padding-top:3px;}
