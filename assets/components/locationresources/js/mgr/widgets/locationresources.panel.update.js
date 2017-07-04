@@ -193,15 +193,25 @@ Ext.extend(LocationResources.panel.UpdateLocation,MODx.panel.Resource,{
             layout: 'column',
             bodyCssClass: 'main-wrapper',
             defaults: {
-                columnWidth: '.20',
                 labelSeparator: '',
                 labelAlign: 'top',
                 border: false,
                 msgTarget: 'under'
             },
             items: [{
+                id: 'center-map-col',
+                layout: 'form',
+                width: 124,
+                items: [{
+                    xtype: 'button',
+                    id: 'button-center-map',
+                    text: '<i class="icon icon-map-o"></i> Center Map',
+                    handler: me.centerMapToMarker
+                }]
+            },{
                 id: 'marker-col-1',
                 layout: 'form',
+                columnWidth: '.20',
                 items: [{
                     xtype: 'numberfield',
                     decimalPrecision: 6,
@@ -221,6 +231,7 @@ Ext.extend(LocationResources.panel.UpdateLocation,MODx.panel.Resource,{
             },{
                 id: 'marker-col-2',
                 layout: 'form',
+                columnWidth: '.20',
                 items: [{
                     xtype: 'numberfield',
                     decimalPrecision: 6,
@@ -240,6 +251,7 @@ Ext.extend(LocationResources.panel.UpdateLocation,MODx.panel.Resource,{
             },{
                 id: 'marker-col-3',
                 layout: 'form',
+                columnWidth: '.20',
                 items: [{
                     xtype: 'textfield',
                     id: 'marker-data-title',
@@ -258,6 +270,7 @@ Ext.extend(LocationResources.panel.UpdateLocation,MODx.panel.Resource,{
             },{
                 id: 'marker-col-4',
                 layout: 'form',
+                columnWidth: '.20',
                 items: [{
                     xtype: 'textfield',
                     id: 'marker-data-desc',
@@ -276,6 +289,7 @@ Ext.extend(LocationResources.panel.UpdateLocation,MODx.panel.Resource,{
             },{
                 id: 'marker-col-5',
                 layout: 'form',
+                columnWidth: '.20',
                 items: [{
                     xtype: 'textfield',
                     id: 'marker-data-link',
@@ -399,6 +413,10 @@ Ext.extend(LocationResources.panel.UpdateLocation,MODx.panel.Resource,{
         me.marker.info.open(me.googleMap, me.marker);
     }
 
+    ,centerMapToMarker: function() {
+        //TODO: center the map to marker location
+    }
+
     ,findAddressWindow: function() {
         var findAddress = MODx.load({
             xtype: 'locationresources-window-findaddress'
@@ -461,10 +479,22 @@ Ext.reg('locationresources-combo-zoomlevel',LocationResources.combo.ZoomLevel);
 
 LocationResources.window.FindAddress = function(config) {
     config = config || {};
+    var me = this;
     Ext.applyIf(config,{
-        action:'mgr/geocode/getCoords',
         title:'Find Address',
         width:600,
+        buttons: [{
+            text: config.cancelBtnText || _('cancel')
+            ,scope: this
+            ,handler: function() { config.closeAction !== 'close' ? this.hide() : this.close(); }
+        },{
+            text: config.cancelBtnText || _('find')
+            ,scope: this
+            ,handler: function() {
+                me.geocodeAddress();
+                this.close();
+            }
+        }],
         fields:[{
             xtype:'textfield',
             fieldLabel:'Enter Address',
@@ -473,5 +503,9 @@ LocationResources.window.FindAddress = function(config) {
     });
     LocationResources.window.FindAddress.superclass.constructor.call(this,config);
 };
-Ext.extend(LocationResources.window.FindAddress,MODx.Window);
+Ext.extend(LocationResources.window.FindAddress,MODx.Window,{
+    geocodeAddress: function() {
+        //TODO: generate coords and update map & data fields
+    }
+});
 Ext.reg('locationresources-window-findaddress',LocationResources.window.FindAddress);
