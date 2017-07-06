@@ -2,7 +2,7 @@ LocationResources.panel.UpdateLocation = function(config) {
     config = config || {};
     this.googleMap = null;
     this.marker = null;
-
+    this.geocoder = null;
     LocationResources.panel.UpdateLocation.superclass.constructor.call(this,config);
     this.addMapPanel(config);
 };
@@ -36,7 +36,12 @@ Ext.extend(LocationResources.panel.UpdateLocation,MODx.panel.Resource,{
                         xtype: 'button',
                         id: 'button-find-address',
                         text: '<i class="icon icon-search"></i> Find Address',
-                        handler: me.findAddressWindow
+                        listeners: {
+                            'click':function() {
+                                me.findAddressWindow(me);
+                            }
+                        }
+
                     }]
 
                 },{
@@ -48,7 +53,7 @@ Ext.extend(LocationResources.panel.UpdateLocation,MODx.panel.Resource,{
                         id: 'button-add-marker',
                         text: '<i class="icon icon-map-marker"></i> Add Marker',
                         handler: function() {
-                            if(Ext.getCmp('has-marker-field').getValue() == 1) {
+                            if(Ext.getCmp('has-marker-field').getValue() === 1) {
                                 me.showCurrentMarkerPanel(config);
                             } else {
                                 me.showNewMarkerPanel(config);
@@ -62,7 +67,7 @@ Ext.extend(LocationResources.panel.UpdateLocation,MODx.panel.Resource,{
                         hidden:true,
                         handler: function() {
                             this.marker.setMap(null);
-                            me.removeMarkerPanel(config);
+                            me.removeMarkerPanel(config,me);
                         },scope:this
                     }]
                 }]
@@ -166,12 +171,19 @@ Ext.extend(LocationResources.panel.UpdateLocation,MODx.panel.Resource,{
                         scrollwheel: false,
                         center: targetLocation
                     });
+                    me.geocoder = new google.maps.Geocoder();
                     google.maps.event.addListener(me.googleMap, 'center_changed', function() {
                         Ext.getCmp('map-data-latitude').setValue(me.googleMap.getCenter().lat());
                         Ext.getCmp('map-data-longitude').setValue(me.googleMap.getCenter().lng());
                     });
                     google.maps.event.addListener(me.googleMap, 'zoom_changed', function() {
                         Ext.getCmp('map-data-zoom').setValue(me.googleMap.getZoom());
+                    });
+                    // Attempt to center map if window is resized.
+                    google.maps.event.addDomListener(window, "resize", function() {
+                        var center = me.googleMap.getCenter();
+                        google.maps.event.trigger(me.googleMap, "resize");
+                        me.googleMap.setCenter(center);
                     });
 
                     var mapDataFields = this.addMapDataFields(config);
@@ -206,7 +218,9 @@ Ext.extend(LocationResources.panel.UpdateLocation,MODx.panel.Resource,{
                     xtype: 'button',
                     id: 'button-center-map',
                     text: '<i class="icon icon-map-o"></i> Center Map',
-                    handler: me.centerMapToMarker
+                    handler: function() {
+                        me.centerMapToMarker(me);
+                    }
                 }]
             },{
                 id: 'marker-col-1',
@@ -308,7 +322,7 @@ Ext.extend(LocationResources.panel.UpdateLocation,MODx.panel.Resource,{
             }]
         };
 
-        if (Ext.getCmp('has-marker-field').getValue() == 0) {
+        if (Ext.getCmp('has-marker-field').getValue() === 0) {
             markerPanel.hidden = true;
             Ext.getCmp('location-map').add(markerPanel);
 
@@ -321,7 +335,7 @@ Ext.extend(LocationResources.panel.UpdateLocation,MODx.panel.Resource,{
     ,dropMarkerPin: function(config) {
         var me = this;
         var latLng;
-        if (Ext.getCmp('has-marker-field').getValue() == 0) {
+        if (Ext.getCmp('has-marker-field').getValue() === 0) {
             latLng = {lat: me.googleMap.getCenter().lat(), lng: me.googleMap.getCenter().lng()};
             Ext.getCmp('has-marker-field').setValue(1);
         } else {
@@ -355,7 +369,7 @@ Ext.extend(LocationResources.panel.UpdateLocation,MODx.panel.Resource,{
         me.addMarkerInfoWindow();
 
         // Only show info window if there's at least one value to put in there.
-        if (Ext.getCmp('marker-data-title').getValue() != '' || Ext.getCmp('marker-data-desc').getValue() != '' || Ext.getCmp('marker-data-link').getValue() != '') {
+        if (Ext.getCmp('marker-data-title').getValue() !== '' || Ext.getCmp('marker-data-desc').getValue() !== '' || Ext.getCmp('marker-data-link').getValue() !== '') {
             me.setMarkerInfoContent();
         }
         me.doLayout();
@@ -381,7 +395,8 @@ Ext.extend(LocationResources.panel.UpdateLocation,MODx.panel.Resource,{
 
     }
 
-    ,removeMarkerPanel: function() {
+    ,removeMarkerPanel: function(config,mainPanel) {
+        mainPanel.marker.setMap(null);
         Ext.getCmp('button-remove-marker').hide();
         Ext.getCmp('button-add-marker').show();
         Ext.getCmp('location-map-marker-panel').hide();
@@ -406,27 +421,38 @@ Ext.extend(LocationResources.panel.UpdateLocation,MODx.panel.Resource,{
         var desc = Ext.getCmp('marker-data-desc').getValue();
         var link = Ext.getCmp('marker-data-link').getValue();
         var content = '<h4>'+title+'</h4><p>'+desc+'</p>';
-        if (link != '' && link != null) {
+        if (link !== '' && link !== null) {
             content += '<a href="'+link+'">Link</a>';
         }
         me.marker.info.setContent(content,me.marker.info);
         me.marker.info.open(me.googleMap, me.marker);
     }
 
-    ,centerMapToMarker: function() {
-        //TODO: center the map to marker location
+    ,centerMapToMarker: function(mainPanel) {
+        var lat =  mainPanel.marker.getPosition().lat();
+        var lng =  mainPanel.marker.getPosition().lng();
+        mainPanel.googleMap.setCenter({lat: lat, lng: lng});
     }
 
-    ,findAddressWindow: function() {
-        var findAddress = MODx.load({
-            xtype: 'locationresources-window-findaddress'
-            ,listeners: {
-                'success': {fn:function() {
-                    this.refresh();
-                },scope:this}
-            }
-        });
-        findAddress.show();
+    ,findAddressWindow: function(main) {
+        var win = Ext.getCmp('locationresources-window-findaddress');
+        if(win) {
+            win.show();
+        } else {
+            var findAddress = MODx.load({
+                xtype: 'locationresources-window-findaddress'
+                ,id:'locationresources-window-findaddress'
+                , mainPanel: main
+                , listeners: {
+                    'success': {
+                        fn: function () {
+                            this.refresh();
+                        }, scope: this
+                    }
+                }
+            });
+            findAddress.show();
+        }
     }
 });
 Ext.reg('locationresources-panel-location-update',LocationResources.panel.UpdateLocation);
@@ -488,24 +514,43 @@ LocationResources.window.FindAddress = function(config) {
             ,scope: this
             ,handler: function() { config.closeAction !== 'close' ? this.hide() : this.close(); }
         },{
-            text: config.cancelBtnText || _('find')
+            text: config.cancelBtnText || 'Find'
             ,scope: this
             ,handler: function() {
-                me.geocodeAddress();
+                me.geocodeAddress(me);
                 this.close();
             }
         }],
+        keys: [{ // This overrides the MODX.Window auto-submit feature.
+            key: Ext.EventObject.ENTER
+            ,fn: function(keyCode, event) {
+                me.geocodeAddress(me);
+            }
+            ,scope: this
+        }],
         fields:[{
             xtype:'textfield',
+            id:'locationresources-address-field',
             fieldLabel:'Enter Address',
+            name:'address',
             anchor:'100%'
         }]
     });
     LocationResources.window.FindAddress.superclass.constructor.call(this,config);
 };
 Ext.extend(LocationResources.window.FindAddress,MODx.Window,{
-    geocodeAddress: function() {
-        //TODO: generate coords and update map & data fields
+    geocodeAddress: function(me) {
+        var address = Ext.getCmp('locationresources-address-field').getValue();
+        me.mainPanel.geocoder.geocode( { 'address': address}, function(results, status) {
+            if (status === google.maps.GeocoderStatus.OK) {
+                me.mainPanel.googleMap.setCenter(results[0].geometry.location);
+                me.mainPanel.removeMarkerPanel(me.config,me.mainPanel);
+                me.mainPanel.showNewMarkerPanel(me.config);
+            } else {
+                alert('Geocode was not successful for the following reason: ' + status);
+            }
+        });
+        this.close();
     }
 });
 Ext.reg('locationresources-window-findaddress',LocationResources.window.FindAddress);

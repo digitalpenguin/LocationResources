@@ -66,7 +66,7 @@ class LocationUpdateProcessor extends modResourceUpdateProcessor {
         $this->profile = $this->object->getOne('Profile');
         // Check to make sure profile record exists. If it doesn't create a new one instead of updating.
         // This is merely a safety check to avoid errors if the database record is accidentally deleted.
-        if(!$this->profile) {
+        if($this->profile === null) {
             return $this->createProfile();
         }
         $this->profile->fromArray($this->getProperties());
