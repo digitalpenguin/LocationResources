@@ -2,6 +2,10 @@ Changelog for LocationResources.
 
 NOTICE: If upgrading from 1.0.* version and using a custom chunk for tpl,css or js; you will need to update your chunks to include the new [[+lr.docid]] placeholder as shown in the new default chunks!
 
+LocationResources 1.2.1 (08/07/2017)
+==============
+- Forces output of decimals to use dot notation. Some European locales were converting to commas and breaking the map.
+
 LocationResources 1.2.0 (07/07/2017)
 ==============
 - Revised layout in manager
