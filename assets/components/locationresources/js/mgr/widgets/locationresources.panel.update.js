@@ -389,14 +389,14 @@ Ext.extend(LocationResources.panel.UpdateLocation,MODx.panel.Resource,{
             Ext.getCmp('marker-data-lat').setValue(me.marker.getPosition().lat());
             Ext.getCmp('marker-data-lng').setValue(me.marker.getPosition().lng());
         });
-
         me.addMarkerInfoWindow();
         me.doLayout();
-
     }
 
     ,removeMarkerPanel: function(config,mainPanel) {
-        mainPanel.marker.setMap(null);
+        if(mainPanel.marker !== null) {
+            mainPanel.marker.setMap(null);
+        }
         Ext.getCmp('button-remove-marker').hide();
         Ext.getCmp('button-add-marker').show();
         Ext.getCmp('location-map-marker-panel').hide();
@@ -409,7 +409,6 @@ Ext.extend(LocationResources.panel.UpdateLocation,MODx.panel.Resource,{
     ,addMarkerInfoWindow:function() {
         var me = this;
         me.marker.info = new google.maps.InfoWindow();
-
         google.maps.event.addListener(me.marker, 'click', function() {
             me.marker.info.open(me.googleMap, me.marker);
         });
