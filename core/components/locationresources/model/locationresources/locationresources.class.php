@@ -78,16 +78,26 @@ class LocationResources {
     public function setMapPlaceholders($docid) {
         $this->modx->setPlaceholders(array(
             'docid'         =>  $docid,
-            'map_lat'       =>  $this->profile->get('lat'),
-            'map_lng'       =>  $this->profile->get('lng'),
+            'map_lat'       =>  $this->convertDecimalToDot($this->profile->get('lat')),
+            'map_lng'       =>  $this->convertDecimalToDot($this->profile->get('lng')),
             'zoom_lvl'      =>  $this->profile->get('zoom_level'),
             'has_marker'    =>  $this->profile->get('has_marker'),
-            'marker_lat'    =>  $this->profile->get('marker_lat'),
-            'marker_lng'    =>  $this->profile->get('marker_lng'),
+            'marker_lat'    =>  $this->convertDecimalToDot($this->profile->get('marker_lat')),
+            'marker_lng'    =>  $this->convertDecimalToDot($this->profile->get('marker_lng')),
             'marker_title'  =>  $this->profile->get('marker_title'),
             'marker_desc'   =>  $this->profile->get('marker_desc'),
             'marker_link'   =>  $this->profile->get('marker_link')
         ),'lr.');
+    }
+
+    /**
+     * Replaces any decimal commas with dots for certain locales
+     *
+     * @param $decimalNum
+     * @return mixed
+     */
+    public function convertDecimalToDot($decimalNum) {
+        return str_replace(',', '.', $decimalNum);
     }
 
     /**
