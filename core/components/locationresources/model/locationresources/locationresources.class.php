@@ -94,16 +94,16 @@ class LocationResources {
 
     public function setClusterMarker($profile) {
         $pid = $profile->get('id');
+        $mLat = $this->convertDecimalToDot($profile->get('marker_lat'));
+        $mLng = $this->convertDecimalToDot($profile->get('marker_lng'));
         $output = "
         var clusterMarker{$pid} = new google.maps.Marker({
-            position: new google.maps.LatLng({$profile->get('marker_lat')}, {$profile->get('marker_lng')}),
+            position: new google.maps.LatLng({$mLat}, {$mLng}),
             draggable: false,
             clickable: true,
         });
         clusterMarkers.push(clusterMarker{$pid});
         ";
-
-
         return $output;
     }
 
