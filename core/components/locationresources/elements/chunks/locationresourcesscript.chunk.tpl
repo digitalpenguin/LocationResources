@@ -33,6 +33,14 @@
             });
         }
     }
+    var clusterMarkers = [];
+    [[+lr.cluster_markers]]
+
+    var options = {
+        imagePath: '[[++locationresources.assets_url]]img/clusterer/m'
+    };
+
+    var markerCluster = new MarkerClusterer(lrMap[[+lr.docid]] , clusterMarkers, options);
     google.maps.event.addDomListener(window, "resize", function() {
         var center = lrMap[[+lr.docid]].getCenter();
         google.maps.event.trigger(lrMap[[+lr.docid]], "resize");

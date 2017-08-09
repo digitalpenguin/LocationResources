@@ -67,15 +67,53 @@ class LocationResources {
             return 'ERROR: For Google Maps to display, you must enter your API Key in the MODX System Settings!';
         }
         $this->modx->regClientStartupScript('https://maps.googleapis.com/maps/api/js?key='.$this->modx->getOption('locationresources.api_key'));
-
+        $this->modx->regClientStartupScript($this->modx->getOption('locationresources.assets_url').'js/libs/markerclusterer.js');
         return false;
+    }
+
+    public function setClusterMarkers($clusterParents) {
+        $collection = $this->modx->getCollection('modResource',array(
+            'class_key:='     =>  'Location',
+            'AND:parent:IN'    =>  $clusterParents
+        ));
+        $markers = array();
+        foreach($collection as $rec) {
+            $profile = null;
+            if(!$profile = $rec->getOne('Profile')) {
+                $this->modx->log(1,'Error: resource did not contain an extended profile (Resource id:' . $rec->get('id') . ')');
+                continue;
+            }
+            //$this->modx->log(1,'Profile id: '.$profile->get('id'));
+            if($profile->get('has_marker')) {
+                array_push($markers,$this->setClusterMarker($profile));
+            }
+
+        }
+        return $markers;
+    }
+
+    public function setClusterMarker($profile) {
+        $pid = $profile->get('id');
+        $output = "
+        var clusterMarker{$pid} = new google.maps.Marker({
+            position: new google.maps.LatLng({$profile->get('marker_lat')}, {$profile->get('marker_lng')}),
+            draggable: false,
+            clickable: true,
+        });
+        clusterMarkers.push(clusterMarker{$pid});
+        ";
+
+
+        return $output;
     }
 
     /**
      * Sets all the placeholders.
      * @param $docid
      */
-    public function setMapPlaceholders($docid) {
+    public function setMapPlaceholders($docid,$clusterMarkers) {
+        $clusterMarkers = implode($clusterMarkers);
+
         $this->modx->setPlaceholders(array(
             'docid'         =>  $docid,
             'map_lat'       =>  $this->convertDecimalToDot($this->profile->get('lat')),
@@ -86,9 +124,12 @@ class LocationResources {
             'marker_lng'    =>  $this->convertDecimalToDot($this->profile->get('marker_lng')),
             'marker_title'  =>  $this->profile->get('marker_title'),
             'marker_desc'   =>  $this->profile->get('marker_desc'),
-            'marker_link'   =>  $this->profile->get('marker_link')
+            'marker_link'   =>  $this->profile->get('marker_link'),
+            'cluster_markers'   =>  $clusterMarkers
         ),'lr.');
     }
+
+
 
     /**
      * Replaces any decimal commas with dots for certain locales
@@ -108,7 +149,7 @@ class LocationResources {
      * @param $docid
      * @return bool|string
      */
-    public function getMap($tpl,$js,$css,$docid) {
+    public function getMap($tpl,$js,$css,$docid,$clusterParents) {
         if(!$targetDoc = $this->modx->getObject('modResource',$docid)) return 'Error: could not load requested resource (ID:' . $docid . ')';
         if($targetDoc->get('class_key') != "Location") return 'Error: resource is not a Location type (ID:' . $docid . ')';
         if(!$this->profile = $targetDoc->getOne('Profile')) return 'Error: resource did not contain an extended profile (ID:' . $docid . ')';
@@ -129,7 +170,8 @@ class LocationResources {
 		        }
 	        }
         }
-        $this->setMapPlaceholders($docid);
+        $clusterMarkers = $this->setClusterMarkers($clusterParents);
+        $this->setMapPlaceholders($docid, $clusterMarkers);
 
         // Get chunks and return errors if missing.
         if(!$map = $this->modx->getChunk($tpl)) return 'Error: Unable to find the locationResourcesTpl chunk!';
