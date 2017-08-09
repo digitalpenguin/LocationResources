@@ -89,6 +89,10 @@ class LocationCreateProcessor extends modResourceCreateProcessor {
         $this->profile = $this->modx->newObject('LocationProfile',array(
             'location' => $this->object->get('id')
         ));
+        // Make sure marker_lat and marker_lng have values even if no marker set to avoid JS errors.
+        $this->setProperty('marker_lat',$this->getProperty('lat'));
+        $this->setProperty('marker_lng',$this->getProperty('lng'));
+
         $this->profile->fromArray($this->getProperties());
         $this->profile->save();
         $this->object->addOne($this->profile);
