@@ -6,9 +6,7 @@ LocationResources
 LocationResources is a basic integration between the Google Maps API and MODX Resources.
 It allows drag and drop in the MODX manager to position maps and set markers which is then reflected on the web context (or others).
 
-08.07.2017 - **Version 1.2.1**
-
-***If upgrading from 1.0.\* version and using a custom chunk for tpl,css or js; you will need to update your chunks to include the new [[+lr.docid]] placeholder as shown in the new default chunks!***
+11.08.2017 - **Version 1.3.0**
 
 Usage:
 ------
@@ -23,12 +21,12 @@ Remember to save the resource!
 Then to have it displayed on your web context:
 
 Call this snippet on any template/chunk attached to the LocationResource: 
-**[[!locationResourcesMap]]**
+**[[locationResourcesMap]]**
 
 This will display a map with all the default settings.
 
-For customization, you can call the snippet with four parameters:
-**[[!locationResources? &docid=\`[resource ID]\` &tpl=\`myCustomTpl\` &js=\`myCustomJS\` &css=\`myCustomDefaultCSS\`]]**
+For customization, you can call the snippet with five parameters:
+**[[locationResources? &docid=\`[resource ID]\` &parents=\`3,42,50\` &tpl=\`myCustomTpl\` &js=\`myCustomJS\` &css=\`myCustomDefaultCSS\`]]**
 
 
 Parameters
@@ -49,3 +47,9 @@ Put the name of your custom chunk that contains the script to display the map.
 &css
 ----
 Put the name of your custom chunk that contains your own css. (Or you can choose not to use default css in your system settings and style on your own).
+
+&parents
+--------
+Accepts a comma-separated list of resource ids. If any children of that resource are LocationResources and have a marker set, those markers will be add via clustering top the map.
+This is in addition to the marker that belongs to the LocationResource controlling the main map. This marker will not be clustered. If you don't want it shown, you can remove it.
+
