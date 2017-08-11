@@ -1,6 +1,11 @@
 Changelog for LocationResources.
 
+LocationResources 1.3.1 (11/08/2017)
+==============
+- Fix pathing problem to cluster js file.
+
 LocationResources 1.3.0 (11/08/2017)
+==============
 - Added marker cluster functionality to allow multiple markers on a single map. Values taken from selected LocationResources under specified parents.
 - Added &parents parameter that accepts a comma-separated list of resource ids with children containing markers.
 - Fixed lexicon values for creating via context menus in the resource tree.

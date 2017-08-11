@@ -65,6 +65,8 @@ class LocationUpdateProcessor extends modResourceUpdateProcessor {
         $this->setProperty('lng',$lng);
         $this->setProperty('zoom_level',$this->modx->getOption('locationresources.default_zoom_level'));
         $this->setProperty('has_marker',0);
+        $this->setProperty('marker_lat',$lat);
+        $this->setProperty('marker_lng',$lat);
 
         $this->profile->fromArray($this->getProperties());
         $this->profile->save();
@@ -105,6 +107,8 @@ class LocationCreateProcessor extends modResourceCreateProcessor {
         $this->setProperty('lng',$lng);
         $this->setProperty('zoom_level',$this->modx->getOption('locationresources.default_zoom_level'));
         $this->setProperty('has_marker',0);
+        $this->setProperty('marker_lat',$lat);
+        $this->setProperty('marker_lng',$lat);
 
         $this->profile->fromArray($this->getProperties());
         $this->profile->save();

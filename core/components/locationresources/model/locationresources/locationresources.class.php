@@ -67,7 +67,7 @@ class LocationResources {
             return 'ERROR: For Google Maps to display, you must enter your API Key in the MODX System Settings!';
         }
         $this->modx->regClientStartupScript('https://maps.googleapis.com/maps/api/js?key='.$this->modx->getOption('locationresources.api_key'));
-        $this->modx->regClientStartupScript($this->modx->getOption('locationresources.assets_url').'js/libs/markerclusterer.js');
+        $this->modx->regClientStartupScript($this->options['assetsUrl'].'js/libs/markerclusterer.js');
         return false;
     }
 
