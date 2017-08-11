@@ -71,7 +71,7 @@ class LocationResources {
         return false;
     }
 
-    public function setClusterMarkers($clusterParents) {
+    public function setClusterMarkers($clusterParents,$docid) {
         $collection = $this->modx->getCollection('modResource',array(
             'class_key:='     =>  'Location',
             'AND:parent:IN'    =>  $clusterParents
@@ -85,24 +85,54 @@ class LocationResources {
             }
             //$this->modx->log(1,'Profile id: '.$profile->get('id'));
             if($profile->get('has_marker')) {
-                array_push($markers,$this->setClusterMarker($profile));
+                array_push($markers,$this->setClusterMarker($profile,$docid));
             }
 
         }
         return $markers;
     }
 
-    public function setClusterMarker($profile) {
+    public function setClusterMarker($profile,$docid) {
         $pid = $profile->get('id');
         $mLat = $this->convertDecimalToDot($profile->get('marker_lat'));
         $mLng = $this->convertDecimalToDot($profile->get('marker_lng'));
+
+
         $output = "
         var clusterMarker{$pid} = new google.maps.Marker({
             position: new google.maps.LatLng({$mLat}, {$mLng}),
             draggable: false,
             clickable: true,
         });
-        clusterMarkers.push(clusterMarker{$pid});
+        ";
+
+        $title = $profile->get('marker_title');
+        $desc = $profile->get('marker_desc');
+        $link = $profile->get('marker_link');
+        $content = "";
+
+        if (strlen($title) > 0) {
+            $content .= "<h4>{$title}</h4>";
+        }
+        if (strlen($desc) > 0) {
+            $content .= "<p>{$desc}</p>";
+        }
+        if (strlen($link) > 0) {
+            $content .= "<a href='{$link}'>{$this->modx->lexicon('locationresources.marker.link_text')}</a>";
+        }
+        if (strlen($content) > 0) {
+            $output .= "
+                clusterMarker{$pid}.info = new google.maps.InfoWindow({
+                    content: \"{$content}\"
+                });
+                google.maps.event.addListener(clusterMarker{$pid}, 'click', function() {
+                    clusterMarker{$pid}.info.open(lrMap{$docid}, clusterMarker{$pid});
+                });
+            ";
+        }
+
+        $output .= "
+            clusterMarkers.push(clusterMarker{$pid});
         ";
         return $output;
     }
@@ -170,7 +200,7 @@ class LocationResources {
 		        }
 	        }
         }
-        $clusterMarkers = $this->setClusterMarkers($clusterParents);
+        $clusterMarkers = $this->setClusterMarkers($clusterParents,$docid);
         $this->setMapPlaceholders($docid, $clusterMarkers);
 
         // Get chunks and return errors if missing.

@@ -16,3 +16,5 @@ $_lang['locationresources.marker.title'] = 'Title';
 $_lang['locationresources.marker.description'] = 'Description';
 $_lang['locationresources.marker.position'] = 'Position';
 
+$_lang['locationresources.marker.link_text'] = 'Click Here';
+
