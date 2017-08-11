@@ -57,6 +57,15 @@ class LocationUpdateProcessor extends modResourceUpdateProcessor {
         $this->profile = $this->modx->newObject('LocationProfile',array(
             'location' => $this->object->get('id')
         ));
+
+        // Grab default location settings and populate record
+        $lat = $this->modx->getOption('locationresources.default_latitude');
+        $lng = $this->modx->getOption('locationresources.default_longitude');
+        $this->setProperty('lat',$lat);
+        $this->setProperty('lng',$lng);
+        $this->setProperty('zoom_level',$this->modx->getOption('locationresources.default_zoom_level'));
+        $this->setProperty('has_marker',0);
+
         $this->profile->fromArray($this->getProperties());
         $this->profile->save();
         return $this->profile;
