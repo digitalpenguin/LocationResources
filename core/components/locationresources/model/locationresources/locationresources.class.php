@@ -96,8 +96,6 @@ class LocationResources {
         $pid = $profile->get('id');
         $mLat = $this->convertDecimalToDot($profile->get('marker_lat'));
         $mLng = $this->convertDecimalToDot($profile->get('marker_lng'));
-
-
         $output = "
         var clusterMarker{$pid} = new google.maps.Marker({
             position: new google.maps.LatLng({$mLat}, {$mLng}),
@@ -105,7 +103,6 @@ class LocationResources {
             clickable: true,
         });
         ";
-
         $title = $profile->get('marker_title');
         $desc = $profile->get('marker_desc');
         $link = $profile->get('marker_link');
@@ -130,7 +127,6 @@ class LocationResources {
                 });
             ";
         }
-
         $output .= "
             clusterMarkers.push(clusterMarker{$pid});
         ";

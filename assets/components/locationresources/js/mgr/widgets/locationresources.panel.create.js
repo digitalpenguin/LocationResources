@@ -301,7 +301,7 @@ Ext.extend(LocationResources.panel.CreateLocation,MODx.panel.Resource,{
                 layout: 'form',
                 columnWidth:.2,
                 items: [{
-                    xtype: 'textfield',
+                    xtype: 'textarea',
                     id: 'marker-data-desc',
                     anchor: '100%',
                     value: config.record.marker_desc,
