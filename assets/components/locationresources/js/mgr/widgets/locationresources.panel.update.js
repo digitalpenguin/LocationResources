@@ -418,6 +418,7 @@ Ext.extend(LocationResources.panel.UpdateLocation,MODx.panel.Resource,{
         var me = this;
         var title = Ext.getCmp('marker-data-title').getValue();
         var desc = Ext.getCmp('marker-data-desc').getValue();
+        desc = desc.replace(/(?:\r\n|\r|\n)/g, '<br />'); // replace newlines
         var link = Ext.getCmp('marker-data-link').getValue();
         var content = '<h4>'+title+'</h4><p>'+desc+'</p>';
         if (link !== '' && link !== null) {
