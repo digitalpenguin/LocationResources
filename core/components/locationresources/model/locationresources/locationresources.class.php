@@ -104,7 +104,8 @@ class LocationResources {
         });
         ";
         $title = $profile->get('marker_title');
-        $desc = $profile->get('marker_desc');
+        // Ensure using <br> instead of \n or \r as that will break the js.
+        $desc = $this->replaceNewLines($profile->get('marker_desc'));
         $link = $profile->get('marker_link');
         $content = "";
 
@@ -133,25 +134,32 @@ class LocationResources {
         return $output;
     }
 
+    public function replaceNewLines($string) {
+        $string = nl2br($string);
+        $string = preg_replace( "/\r|\n/", "", $string );
+        return $string;
+    }
+
+
     /**
      * Sets all the placeholders.
      * @param $docid
      */
     public function setMapPlaceholders($docid,$clusterMarkers) {
         $clusterMarkers = implode($clusterMarkers);
-
         $this->modx->setPlaceholders(array(
-            'docid'         =>  $docid,
-            'map_lat'       =>  $this->convertDecimalToDot($this->profile->get('lat')),
-            'map_lng'       =>  $this->convertDecimalToDot($this->profile->get('lng')),
-            'zoom_lvl'      =>  $this->profile->get('zoom_level'),
-            'has_marker'    =>  $this->profile->get('has_marker'),
-            'marker_lat'    =>  $this->convertDecimalToDot($this->profile->get('marker_lat')),
-            'marker_lng'    =>  $this->convertDecimalToDot($this->profile->get('marker_lng')),
-            'marker_title'  =>  $this->profile->get('marker_title'),
-            'marker_desc'   =>  $this->profile->get('marker_desc'),
-            'marker_link'   =>  $this->profile->get('marker_link'),
-            'cluster_markers'   =>  $clusterMarkers
+            'docid'             =>  $docid,
+            'map_lat'           =>  $this->convertDecimalToDot($this->profile->get('lat')),
+            'map_lng'           =>  $this->convertDecimalToDot($this->profile->get('lng')),
+            'zoom_lvl'          =>  $this->profile->get('zoom_level'),
+            'has_marker'        =>  $this->profile->get('has_marker'),
+            'marker_lat'        =>  $this->convertDecimalToDot($this->profile->get('marker_lat')),
+            'marker_lng'        =>  $this->convertDecimalToDot($this->profile->get('marker_lng')),
+            'marker_title'      =>  $this->profile->get('marker_title'),
+            'marker_desc'       =>  $this->replaceNewLines($this->profile->get('marker_desc')),
+            'marker_link'       =>  $this->profile->get('marker_link'),
+            'cluster_markers'   =>  $clusterMarkers,
+            'assetsUrl'         =>  $this->options['assetsUrl']
         ),'lr.');
     }
 

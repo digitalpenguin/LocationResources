@@ -37,7 +37,7 @@
     [[+lr.cluster_markers]]
 
     var options = {
-        imagePath: '[[++assets_url]]components/locationresources/img/clusterer/m'
+        imagePath: '[[+lr.assetsUrl]]img/clusterer/m'
     };
 
     var markerCluster = new MarkerClusterer(lrMap[[+lr.docid]] , clusterMarkers, options);
