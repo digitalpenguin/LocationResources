@@ -322,7 +322,7 @@ Ext.extend(LocationResources.panel.UpdateLocation,MODx.panel.Resource,{
             }]
         };
 
-        if (Ext.getCmp('has-marker-field').getValue() === 0) {
+        if (Ext.getCmp('has-marker-field').getValue() !== 1) {
             markerPanel.hidden = true;
             Ext.getCmp('location-map').add(markerPanel);
 
@@ -335,7 +335,7 @@ Ext.extend(LocationResources.panel.UpdateLocation,MODx.panel.Resource,{
     ,dropMarkerPin: function(config) {
         var me = this;
         var latLng;
-        if (Ext.getCmp('has-marker-field').getValue() === 0) {
+        if (Ext.getCmp('has-marker-field').getValue() != 1) {
             latLng = {lat: me.googleMap.getCenter().lat(), lng: me.googleMap.getCenter().lng()};
             Ext.getCmp('has-marker-field').setValue(1);
         } else {
@@ -377,6 +377,7 @@ Ext.extend(LocationResources.panel.UpdateLocation,MODx.panel.Resource,{
 
     ,showNewMarkerPanel: function(config) {
         var me =this;
+        Ext.getCmp('has-marker-field').setValue(1);
         Ext.getCmp('location-map-marker-panel').show();
         Ext.getCmp('button-add-marker').hide();
         Ext.getCmp('button-remove-marker').show();

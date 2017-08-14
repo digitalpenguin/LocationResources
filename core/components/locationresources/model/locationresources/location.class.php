@@ -64,9 +64,13 @@ class LocationUpdateProcessor extends modResourceUpdateProcessor {
         $this->setProperty('lat',$lat);
         $this->setProperty('lng',$lng);
         $this->setProperty('zoom_level',$this->modx->getOption('locationresources.default_zoom_level'));
-        $this->setProperty('has_marker',0);
-        $this->setProperty('marker_lat',$lat);
-        $this->setProperty('marker_lng',$lat);
+        //$this->setProperty('has_marker',0);
+        if(empty($this->getProperty('marker_lat'))) {
+            $this->setProperty('marker_lat',$lat);
+        }
+        if(empty($this->getProperty('marker_lng'))) {
+            $this->setProperty('marker_lng', $lng);
+        }
 
         $this->profile->fromArray($this->getProperties());
         $this->profile->save();
@@ -106,10 +110,13 @@ class LocationCreateProcessor extends modResourceCreateProcessor {
         $this->setProperty('lat',$lat);
         $this->setProperty('lng',$lng);
         $this->setProperty('zoom_level',$this->modx->getOption('locationresources.default_zoom_level'));
-        $this->setProperty('has_marker',0);
-        $this->setProperty('marker_lat',$lat);
-        $this->setProperty('marker_lng',$lat);
-
+        //$this->setProperty('has_marker',0);
+        if(empty($this->getProperty('marker_lat'))) {
+            $this->setProperty('marker_lat',$lat);
+        }
+        if(empty($this->getProperty('marker_lng'))) {
+            $this->setProperty('marker_lng', $lng);
+        }
         $this->profile->fromArray($this->getProperties());
         $this->profile->save();
         $this->object->addOne($this->profile);
