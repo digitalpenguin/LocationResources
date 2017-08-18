@@ -1,8 +1,18 @@
 Changelog for LocationResources.
 
+
+LocationResources 1.3.2 (18/08/2017)
+==============
+- Fixed marker bug with quick create.
+- Removed all cluster code from output if not using clustering.
+- Fixed broken JS caused by /n and /r when using multiple lines for description
+- Fixed bug preventing map location to be set before initially saving resource.
+
+
 LocationResources 1.3.1 (11/08/2017)
 ==============
 - Fix pathing problem to cluster js file.
+
 
 LocationResources 1.3.0 (11/08/2017)
 ==============
@@ -12,9 +22,11 @@ LocationResources 1.3.0 (11/08/2017)
 - Added checks to make sure profile record is populated with default values on create.
 - Changed marker description field to textarea to allow multi-line descriptions. (Kept same layout for now).
 
+
 LocationResources 1.2.1 (08/07/2017)
 ==============
 - Forces output of decimals to use dot notation. Some European locales were converting to commas and breaking the map.
+
 
 LocationResources 1.2.0 (07/07/2017)
 ==============

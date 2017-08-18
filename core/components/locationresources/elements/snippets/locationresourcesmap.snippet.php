@@ -3,7 +3,7 @@ $tpl = $modx->getOption('tpl', $scriptProperties, 'locationResourcesTpl');
 $js = $modx->getOption('js', $scriptProperties, 'locationResourcesScript');
 $css = $modx->getOption('css', $scriptProperties, 'locationResourcesCSS');
 $docid = $modx->getOption('docid', $scriptProperties, $modx->resource->get('id'));
-$clusterParents = explode(",",$modx->getOption('parents', $scriptProperties, ''));
+$clusterParents = $modx->getOption('parents', $scriptProperties, null);
 
 $locationResources = $modx->getService(
     'locationresources',

@@ -1,14 +1,14 @@
 ---------------------------------------
 LocationResources
 ---------------------------------------
-Version: 1.3.1
+Version: 1.3.2
 Author: Murray Wood <murray@digitalpenguin.hk>
 ---------------------------------------
 
 LocationResources is a basic integration between the Google Maps API and MODX Resources.
 It allows drag and drop in the MODX manager to position maps and set markers which is then reflected on the web context (or others).
 
-11.08.2017 - Version 1.3.1
+18.08.2017 - Version 1.3.2
 
 Usage:
 
@@ -52,6 +52,6 @@ Put the name of your custom chunk that contains your own css. (Or you can choose
 
 &parents
 --------
-Accepts a comma-separated list of resource ids. If any children of that resource are LocationResources and have a marker set, those markers will be add via clustering top the map.
+Accepts a comma-separated list of resource ids. If any children of that resource are LocationResources and have a marker set, those markers will be added via clustering to the map.
 This is in addition to the marker that belongs to the LocationResource controlling the main map. This marker will not be clustered. If you don't want it shown, you can remove it.
 

@@ -11,6 +11,7 @@ class LocationResources {
     public $cache = null;
     public $options = array();
     public $profile = null;
+    public $clusterMap = 0;
 
     public function __construct(modX &$modx, array $options = array()) {
         $this->modx =& $modx;
@@ -67,7 +68,9 @@ class LocationResources {
             return 'ERROR: For Google Maps to display, you must enter your API Key in the MODX System Settings!';
         }
         $this->modx->regClientStartupScript('https://maps.googleapis.com/maps/api/js?key='.$this->modx->getOption('locationresources.api_key'));
-        $this->modx->regClientStartupScript($this->options['assetsUrl'].'js/libs/markerclusterer.js');
+        if($this->clusterMap) {
+            $this->modx->regClientStartupScript($this->options['assetsUrl'] . 'js/libs/markerclusterer.js');
+        }
         return false;
     }
 
@@ -144,9 +147,9 @@ class LocationResources {
     /**
      * Sets all the placeholders.
      * @param $docid
+     * @param $clusterMarkers
      */
-    public function setMapPlaceholders($docid,$clusterMarkers) {
-        $clusterMarkers = implode($clusterMarkers);
+    public function setMapPlaceholders($docid,$clusterMarkers = null) {
         $this->modx->setPlaceholders(array(
             'docid'             =>  $docid,
             'map_lat'           =>  $this->convertDecimalToDot($this->profile->get('lat')),
@@ -158,9 +161,27 @@ class LocationResources {
             'marker_title'      =>  $this->profile->get('marker_title'),
             'marker_desc'       =>  $this->replaceNewLines($this->profile->get('marker_desc')),
             'marker_link'       =>  $this->profile->get('marker_link'),
-            'cluster_markers'   =>  $clusterMarkers,
             'assetsUrl'         =>  $this->options['assetsUrl']
         ),'lr.');
+
+        // Only create the cluster_markers placeholder if they exist
+        if(!empty($clusterMarkers)) {
+            $clusterMarkerOutput = "
+            var clusterMarkers = [];
+            ";
+            $clusterMarkerOutput .= implode($clusterMarkers);
+            $clusterCode = "
+            var options = {
+                imagePath: '[[+lr.assetsUrl]]img/clusterer/m'
+            };
+            var markerCluster = new MarkerClusterer(lrMap[[+lr.docid]] , clusterMarkers, options);
+            ";
+            $clusterMarkerOutput .= $clusterCode;
+            $this->modx->setPlaceholder('lr.cluster_markers', $clusterMarkerOutput);
+        } else {
+            // Set to nothing so placeholder tag doesn't show in browser page source
+            $this->modx->setPlaceholder('lr.cluster_markers', '');
+        }
     }
 
 
@@ -181,6 +202,7 @@ class LocationResources {
      * @param $js
      * @param $css
      * @param $docid
+     * @param $clusterParents
      * @return bool|string
      */
     public function getMap($tpl,$js,$css,$docid,$clusterParents) {
@@ -189,6 +211,10 @@ class LocationResources {
         if(!$this->profile = $targetDoc->getOne('Profile')) return 'Error: resource did not contain an extended profile (ID:' . $docid . ')';
 
         // Check for GMaps API Key and add lib to head.
+        if(!empty($clusterParents)) {
+            $this->clusterMap = 1;
+            $clusterParents = explode(",",$clusterParents);
+        }
         $error = $this->initializeMap();
         if($error != false) return $error;
 
@@ -204,8 +230,13 @@ class LocationResources {
 		        }
 	        }
         }
-        $clusterMarkers = $this->setClusterMarkers($clusterParents,$docid);
-        $this->setMapPlaceholders($docid, $clusterMarkers);
+
+        if($this->clusterMap) {
+            $clusterMarkers = $this->setClusterMarkers($clusterParents, $docid);
+            $this->setMapPlaceholders($docid, $clusterMarkers);
+        } else {
+            $this->setMapPlaceholders($docid);
+        }
 
         // Get chunks and return errors if missing.
         if(!$map = $this->modx->getChunk($tpl)) return 'Error: Unable to find the locationResourcesTpl chunk!';

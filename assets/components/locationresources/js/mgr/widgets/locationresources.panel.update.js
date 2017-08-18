@@ -377,7 +377,7 @@ Ext.extend(LocationResources.panel.UpdateLocation,MODx.panel.Resource,{
 
     ,showNewMarkerPanel: function(config) {
         var me =this;
-        Ext.getCmp('has-marker-field').setValue(1);
+        //Ext.getCmp('has-marker-field').setValue(1);
         Ext.getCmp('location-map-marker-panel').show();
         Ext.getCmp('button-add-marker').hide();
         Ext.getCmp('button-remove-marker').show();

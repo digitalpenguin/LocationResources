@@ -64,7 +64,9 @@ class LocationUpdateProcessor extends modResourceUpdateProcessor {
         $this->setProperty('lat',$lat);
         $this->setProperty('lng',$lng);
         $this->setProperty('zoom_level',$this->modx->getOption('locationresources.default_zoom_level'));
-        //$this->setProperty('has_marker',0);
+        if(empty($this->getProperty('has_marker'))) {
+            $this->setProperty('has_marker',0);
+        }
         if(empty($this->getProperty('marker_lat'))) {
             $this->setProperty('marker_lat',$lat);
         }
@@ -107,10 +109,21 @@ class LocationCreateProcessor extends modResourceCreateProcessor {
         // Grab default location settings and populate record
         $lat = $this->modx->getOption('locationresources.default_latitude');
         $lng = $this->modx->getOption('locationresources.default_longitude');
-        $this->setProperty('lat',$lat);
-        $this->setProperty('lng',$lng);
-        $this->setProperty('zoom_level',$this->modx->getOption('locationresources.default_zoom_level'));
-        //$this->setProperty('has_marker',0);
+        $zoom = $this->modx->getOption('locationresources.default_zoom_level');
+
+        if(empty($this->getProperty('lat'))) {
+            $this->setProperty('lat',$lat);
+        }
+        if(empty($this->getProperty('lng'))) {
+            $this->setProperty('lng',$lng);
+        }
+        if(empty($this->getProperty('zoom_level'))) {
+            $this->setProperty('zoom_level', $zoom);
+        }
+
+        if(empty($this->getProperty('has_marker'))) {
+            $this->setProperty('has_marker',0);
+        }
         if(empty($this->getProperty('marker_lat'))) {
             $this->setProperty('marker_lat',$lat);
         }
