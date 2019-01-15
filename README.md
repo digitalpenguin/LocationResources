@@ -26,7 +26,13 @@ Call this snippet on any template/chunk attached to the LocationResource:
 This will display a map with all the default settings.
 
 For customization, you can call the snippet with five parameters:
-**[[locationResourcesMap? &docid=\`[resource ID]\` &parents=\`3,42,50\` &tpl=\`myCustomTpl\` &js=\`myCustomJS\` &css=\`myCustomDefaultCSS\`]]**
+**[[locationResourcesMap? 
+    &docid=\`4\` 
+    &parents=\`3,42,50\` 
+    &tpl=\`myCustomTpl\` 
+    &js=\`myCustomJS\` 
+    &css=\`myCustomDefaultCSS\`
+]]**
 
 
 Parameters
