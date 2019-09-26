@@ -34,6 +34,38 @@ class Location extends modResource {
         $this->xpdo->lexicon->load('locationresources:default');
         return $this->xpdo->lexicon('locationresources.system.type_name');
     }
+
+    public function toArray($keyPrefix = '', $rawValues = false, $excludeLazy = false, $includeRelated = false)
+    {
+        $fields = parent::toArray($keyPrefix, $rawValues, $excludeLazy, true);
+        $c = $this->xpdo->newQuery('LocationProfile');
+        $c->where(array('location' => $fields['id']));
+        $c->select($this->xpdo->getSelectColumns('LocationProfile', 'LocationProfile', '', array('id', 'location'), true));
+        $profile = $this->getOne('Profile', $c);
+        if ($profile) {
+            $fields = array_merge($fields, $profile->toArray('location_', false, true));
+        }
+        return $fields;
+    }
+
+    public function get($k, $format = null, $formatTemplate = null)
+    {
+        if (is_array($k)) {
+            $fields = parent::get($k, $format, $formatTemplate);
+            $c = $this->xpdo->newQuery('LocationProfile');
+            $c->where(array('location' => $fields['id']));
+            $c->select($this->xpdo->getSelectColumns('LocationProfile', 'LocationProfile', '', array(
+                'id', 'location'
+            ), true));
+            $profile = $this->getOne('Profile', $c);
+            if ($profile) {
+                $fields = array_merge($fields, $profile->toArray('location_', false, true));
+            }
+            return $fields;
+        } else {
+            return parent::get($k, $format, $formatTemplate);
+        }
+    }
 }
 
 class LocationUpdateProcessor extends modResourceUpdateProcessor {
