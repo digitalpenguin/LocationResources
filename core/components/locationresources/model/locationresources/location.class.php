@@ -121,6 +121,27 @@ class LocationUpdateProcessor extends modResourceUpdateProcessor {
         $this->profile->fromArray($this->getProperties());
         return $this->profile;
     }
+    // Remove the location_ prefixed keys from the response to avoid JSON issues.
+    public function cleanup() {
+        $this->object->removeLock();
+        $this->clearCache();
+
+        $returnArray = $this->object->get(array_diff(array_keys($this->object->_fields), array('content','ta','introtext','description','link_attributes','pagetitle','longtitle','menutitle','properties')));
+        foreach ($returnArray as $k => $v) {
+            if (strpos($k,'tv') === 0 || strpos($k,'location_') === 0 ) {
+                unset($returnArray[$k]);
+            }
+        }
+        $returnArray['class_key'] = $this->object->get('class_key');
+        $this->workingContext->prepare(false);
+        $this->modx->reloadContext($this->workingContext->key);
+        $returnArray['preview_url'] = '';
+        if (!$this->object->get('deleted')) {
+            $returnArray['preview_url'] = $this->modx->makeUrl($this->object->get('id'), $this->object->get('context_key'), '', 'full');
+        }
+
+        return $this->success('',$returnArray);
+    }
 }
 
 class LocationCreateProcessor extends modResourceCreateProcessor {
