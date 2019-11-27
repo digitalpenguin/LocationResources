@@ -1,5 +1,10 @@
 Changelog for LocationResources.
 
+LocationResources 1.4.0 (27/11/2019)
+==============
+- Map values can now be accessed directly when using getResources! The fields can be used in a getResources tpl with the 'location_' prefix. - Thanks to @jako!
+- Updated readme.
+
 
 LocationResources 1.3.2 (18/08/2017)
 ==============
