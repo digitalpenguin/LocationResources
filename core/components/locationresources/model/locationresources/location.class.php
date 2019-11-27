@@ -34,6 +34,38 @@ class Location extends modResource {
         $this->xpdo->lexicon->load('locationresources:default');
         return $this->xpdo->lexicon('locationresources.system.type_name');
     }
+
+    public function toArray($keyPrefix = '', $rawValues = false, $excludeLazy = false, $includeRelated = false)
+    {
+        $fields = parent::toArray($keyPrefix, $rawValues, $excludeLazy, true);
+        $c = $this->xpdo->newQuery('LocationProfile');
+        $c->where(array('location' => $fields['id']));
+        $c->select($this->xpdo->getSelectColumns('LocationProfile', 'LocationProfile', '', array('id', 'location'), true));
+        $profile = $this->getOne('Profile', $c);
+        if ($profile) {
+            $fields = array_merge($fields, $profile->toArray('location_', false, true));
+        }
+        return $fields;
+    }
+
+    public function get($k, $format = null, $formatTemplate = null)
+    {
+        if (is_array($k)) {
+            $fields = parent::get($k, $format, $formatTemplate);
+            $c = $this->xpdo->newQuery('LocationProfile');
+            $c->where(array('location' => $fields['id']));
+            $c->select($this->xpdo->getSelectColumns('LocationProfile', 'LocationProfile', '', array(
+                'id', 'location'
+            ), true));
+            $profile = $this->getOne('Profile', $c);
+            if ($profile) {
+                $fields = array_merge($fields, $profile->toArray('location_', false, true));
+            }
+            return $fields;
+        } else {
+            return parent::get($k, $format, $formatTemplate);
+        }
+    }
 }
 
 class LocationUpdateProcessor extends modResourceUpdateProcessor {
@@ -88,6 +120,27 @@ class LocationUpdateProcessor extends modResourceUpdateProcessor {
         }
         $this->profile->fromArray($this->getProperties());
         return $this->profile;
+    }
+    // Remove the location_ prefixed keys from the response to avoid JSON issues.
+    public function cleanup() {
+        $this->object->removeLock();
+        $this->clearCache();
+
+        $returnArray = $this->object->get(array_diff(array_keys($this->object->_fields), array('content','ta','introtext','description','link_attributes','pagetitle','longtitle','menutitle','properties')));
+        foreach ($returnArray as $k => $v) {
+            if (strpos($k,'tv') === 0 || strpos($k,'location_') === 0 ) {
+                unset($returnArray[$k]);
+            }
+        }
+        $returnArray['class_key'] = $this->object->get('class_key');
+        $this->workingContext->prepare(false);
+        $this->modx->reloadContext($this->workingContext->key);
+        $returnArray['preview_url'] = '';
+        if (!$this->object->get('deleted')) {
+            $returnArray['preview_url'] = $this->modx->makeUrl($this->object->get('id'), $this->object->get('context_key'), '', 'full');
+        }
+
+        return $this->success('',$returnArray);
     }
 }
 
