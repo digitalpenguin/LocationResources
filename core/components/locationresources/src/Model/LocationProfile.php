@@ -1,8 +1,14 @@
 <?php
+
+namespace LocationResources\Model;
+
+use xPDO\Om\xPDOSimpleObject;
+
 /**
  * @package locationresources
  */
 class LocationProfile extends xPDOSimpleObject {
+
     // Duplicates the location profile data.
     public function duplicate(Location $resource) {
         $oldProfile = $this->toArray();

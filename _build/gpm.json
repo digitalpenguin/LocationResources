@@ -1,0 +1,77 @@
+{
+  "name": "LocationResources",
+  "lowCaseName": "locationresources",
+  "description": "Google Map locations as extended MODX Resources.",
+  "author": "Murray Wood",
+  "version": "2.0.0-dev1",
+  "package":{
+
+    "menus": [],
+
+    "elements": {
+      "snippets": [{
+        "name": "locationResourcesMap",
+        "file": "locationresourcesmap.snippet.php"
+      }],
+      "chunks": [{
+        "name": "locationResourcesTpl",
+        "file": "locationresourcestpl.chunk.tpl"
+      },{
+        "name": "locationResourcesScript",
+        "file": "locationresourcesscript.chunk.tpl"
+      },{
+        "name": "locationResourcesCSS",
+        "file": "locationresourcescss.chunk.tpl"
+      }],
+      "plugins": [{
+        "name": "LocationResources",
+        "file": "locationresources.plugin.php",
+        "events": [
+          "OnDocFormPrerender"
+        ]
+      }]
+    },
+
+    "systemSettings": [{
+      "key": "api_key",
+      "type": "textfield",
+      "area": "default",
+      "value": ""
+    },{
+      "key": "map_height",
+      "type": "textfield",
+      "area": "default",
+      "value": "300"
+    },{
+      "key": "use_default_css",
+      "type": "combo-boolean",
+      "area": "default",
+      "value": "1"
+    },{
+      "key": "map_div",
+      "type": "textfield",
+      "area": "default",
+      "value": "lr_map"
+    },{
+      "key": "default_latitude",
+      "type": "textfield",
+      "area": "default",
+      "value": "22.286424"
+    },{
+      "key": "default_longitude",
+      "type": "textfield",
+      "area": "default",
+      "value": "114.18151"
+    },{
+      "key": "default_zoom_level",
+      "type": "textfield",
+      "area": "default",
+      "value": "11"
+    }]
+  }
+
+,"database": {
+  "tables": ["LocationProfile"]
+}
+,"extensionPackage": {}
+}

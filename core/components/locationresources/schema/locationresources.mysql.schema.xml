@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<model package="locationresources" baseClass="xPDOObject" platform="mysql" defaultEngine="MyISAM" phpdoc-package="locationresources" version="0.1">
-    <object class="Location" extends="modResource">
-        <composite alias="Profile" class="LocationProfile" local="id" foreign="location" cardinality="one" owner="local" />
+<model package="locationresources" baseClass="xPDO\Om\xPDOObject" platform="mysql" defaultEngine="InnoDB" phpdoc-package="locationresources" verson="3.0">
+    <object class="LocationResources\Model\Location" extends="MODX\Revolution\modResource">
+        <composite alias="Profile" class="LocationResources\Model\LocationProfile" local="id" foreign="location" cardinality="one" owner="local" />
     </object>
 
-    <object class="LocationProfile" table="location_profile" extends="xPDOSimpleObject">
+    <object class="LocationResources\Model\LocationProfile" table="location_profile" extends="xPDO\Om\xPDOSimpleObject">
         <field key="location" dbtype="int" precision="10" phptype="integer" attributes="unsigned" null="true" />
         <field key="lat" dbtype="decimal" precision="10,6" phptype="float" null="true" />
         <field key="lng" dbtype="decimal" precision="10,6" phptype="float" null="true" />
@@ -16,6 +16,6 @@
         <field key="marker_desc" dbtype="text" phptype="string" null="true" />
         <field key="marker_link" dbtype="text" phptype="string" null="true" />
         <field key="marker_link_text" dbtype="varchar" phptype="string" precision="191" null="true" />
-        <aggregate alias="Location" class="Location" local="location" foreign="id" cardinality="one" owner="foreign" />
+        <aggregate alias="Location" class="LocationResources\Model\Location" local="location" foreign="id" cardinality="one" owner="foreign" />
     </object>
 </model>

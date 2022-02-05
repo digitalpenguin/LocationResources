@@ -1,7 +1,11 @@
 <?php
 
+namespace LocationResources;
+
+use MODX\Revolution\modX;
+
 /**
- * The main LocationResources service class.
+ * The main LocationResources\LocationResources service class.
  *
  * @package locationresources
  */
@@ -13,8 +17,8 @@ class LocationResources {
     public $profile = null;
     public $clusterMap = 0;
 
-    public function __construct(modX &$modx, array $options = array()) {
-        $this->modx =& $modx;
+    public function __construct(modX $modx, array $options = []) {
+        $this->modx = $modx;
         $this->namespace = $this->getOption('namespace', $options, 'locationresources');
 
         $corePath = $this->getOption('core_path', $options, $this->modx->getOption('core_path', null, MODX_CORE_PATH) . 'components/locationresources/');

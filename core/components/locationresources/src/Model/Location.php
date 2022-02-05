@@ -1,14 +1,19 @@
 <?php
-require_once MODX_CORE_PATH.'model/modx/modprocessor.class.php';
-require_once MODX_CORE_PATH.'model/modx/processors/resource/create.class.php';
-require_once MODX_CORE_PATH.'model/modx/processors/resource/update.class.php';
+
+namespace LocationResources\Model;
+
+use MODX\Revolution\modResource;
+use MODX\Revolution\Processors\Resource\Create;
+use MODX\Revolution\Processors\Resource\Update;
+use xPDO\xPDO;
+
 /**
  * @package locationresources
  */
 class Location extends modResource {
 
     public $showInContextMenu = true;
-    function __construct(xPDO & $xpdo) {
+    function __construct(xPDO $xpdo) {
         parent:: __construct($xpdo);
         $this->set('class_key', 'Location');
     }
@@ -68,7 +73,7 @@ class Location extends modResource {
     }
 }
 
-class LocationUpdateProcessor extends modResourceUpdateProcessor {
+class LocationUpdateProcessor extends Update {
     public $profile;
     /**
      * Do any processing before the fields are set
@@ -144,7 +149,7 @@ class LocationUpdateProcessor extends modResourceUpdateProcessor {
     }
 }
 
-class LocationCreateProcessor extends modResourceCreateProcessor {
+class LocationCreateProcessor extends Create {
     public $profile;
     /**
      * Do any processing before the fields are set
